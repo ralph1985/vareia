@@ -6,11 +6,13 @@ Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, moni
 
 - `docs/`: documentación general y runbook operativo.
 - `docs/execution-checklist.md`: checklist ejecutable del despliegue por fases.
+- `docs/bootstrap-host.md`: guía del bootstrap reproducible de host base.
 - `inventory/`: inventario técnico del VPS y servicios.
 - `checklists/`: checklists de despliegue, hardening y mantenimiento.
 - `changes/`: registro cronológico de cambios.
 - `incidents/`: incidencias y postmortems.
 - `monitoring/`: métricas, alertas y revisiones periódicas.
+- `scripts/`: automatizaciones operativas (bootstrap, backup, restore, etc.).
 
 ## Estado actual
 
