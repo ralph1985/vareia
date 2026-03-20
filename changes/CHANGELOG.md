@@ -1,0 +1,72 @@
+# Changelog de infraestructura
+
+Formato de fecha: `YYYY-MM-DD`.
+
+## 2026-03-20
+
+- Alta del proyecto Vareia para seguimiento del VPS.
+- Definido alcance funcional del VPS:
+  - reverse-proxy
+  - automation
+  - orchestrator
+  - apps
+- Decidido despliegue dockerizado por stacks separados.
+- Definido n8n en este mismo VPS (privado) con alertas a Slack.
+- Definido OpenClaw como orquestador multiagente (privado), pendiente de diseño/instalación.
+- Definido Tailscale como bloque prioritario de red tras instalación de Docker.
+- Definida estrategia de backups propia hacia OneDrive (diario, retención 30 días).
+- Acordado no documentar secretos ni datos sensibles en repositorio público.
+- Confirmado plan del VPS: `gp.nano`.
+- Definidas redes Docker separadas: `infra-net` + `proxy-net`.
+- Definido PostgreSQL compartido: `postgres:17`, contenedor `postgres-shared`, volumen `postgres-data`, sin exponer.
+- Definido n8n como primer servicio real (`app_n8n` / `usr_n8n`), privado y accesible vía reverse-proxy interno.
+- Definida convención de BBDD por proyecto: `app_<project_slug>` / `usr_<project_slug>`.
+- Definidas políticas de operación: `restart: unless-stopped` y `healthcheck` en servicios críticos.
+- Definido backup lógico diario de PostgreSQL (`pg_dump` + `.gz`) con rotación >30 días.
+- Definido recordatorio: deshabilitar `PasswordAuthentication` más adelante.
+- Definido `n8n-data` como volumen persistente para n8n.
+- Definidas imágenes fijas (sin `latest`) para `n8n`, `nginx` y `postgres`.
+- Definido esquema de variables por stack (`/opt/infra/<stack>/.env`) con `.env.example`.
+- Definido naming con prefijo de stack y uso de `docker compose --project-name <stack>`.
+- Añadida plantilla documental de directorios para `/opt/infra` (sin ejecución aún).
+- Confirmado orden de ejecucion final: Docker/Compose -> Tailscale -> redes Docker -> PostgreSQL -> n8n.
+- Definidos parametros de PostgreSQL: `5432` interno, solo `infra-net`, `POSTGRES_DB=postgres` de bootstrap y configuracion inicial por defecto.
+- Definidos limites iniciales de recursos: PostgreSQL `0.5 CPU` + `512MB RAM`; n8n `0.5 CPU` + `512MB RAM`.
+- Definida estrategia tecnica de backups PostgreSQL: script en host + cron diario `04:00`, ruta `/opt/infra/backups/postgres`, formato `YYYYMMDD-HHMM-app_<project>.sql.gz`, rotacion >30 dias y validacion de fichero no vacio.
+- Definidos parametros de n8n: contenedor `automation-n8n`, puerto interno `5678`, dependencia de healthcheck de PostgreSQL, `EXECUTIONS_MODE=regular` y limpieza de ejecuciones a 14 dias.
+- Definido bloque documental de `reverse-proxy`: contenedor `reverse-proxy-nginx`, imagen `nginx:1.28-alpine`, redes `proxy-net` + `infra-net`.
+- Definida estructura de configuracion Nginx: `nginx.conf` + `conf.d/*.conf` por servicio + `default-deny.conf`.
+- Definido bloqueo de exposicion `80/443` y TLS/Let's Encrypt hasta contar con dominio y DNS operativos.
+- Definido logging de reverse-proxy en `/opt/infra/reverse-proxy/logs` con rotacion pendiente.
+- Definido bloque documental de `orchestrator/OpenClaw`: contenedor `orchestrator-openclaw`, solo `infra-net`, sin puertos publicados.
+- Definido OpenClaw con DB dedicada `app_openclaw`/`usr_openclaw` y volumen `openclaw-data`.
+- Definidos limites iniciales de OpenClaw `0.25 CPU` + `256MB RAM`, con `restart: unless-stopped` y `healthcheck`.
+- Definido acceso administrativo inicial de OpenClaw solo por Tailscale.
+- Definida integracion desacoplada `n8n` -> OpenClaw via API/webhook, interfaz minima documental `POST /jobs`.
+- Definido bloque documental de `apps`: stack reservado sin servicios iniciales.
+- Definida estructura de apps futuras por carpeta `/opt/infra/apps/<app-slug>/`.
+- Definida plantilla minima por app: `README`, `compose.yml`, `.env`, `.env.example`.
+- Definida politica de red para apps: `infra-net` por defecto y `proxy-net` solo bajo necesidad explicita.
+- Definida politica de BD por app: `app_<slug>` / `usr_<slug>`.
+- Definidos defaults por app: `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM`.
+- Definido bloque de monitorizacion/alertas: checks cada 15 min para `uptime`, disco, RAM y salud de `postgres`/`n8n`/`nginx`.
+- Definido esquema de alertas mixto: inmediata por caída de contenedor crítico y por umbrales de recursos.
+- Definidos umbrales iniciales: RAM > 85% (15 min), Disco > 80% (15 min), CPU > 90% (15 min).
+- Definidas severidades: `warning` (aviso unico) y `critical` (repeticion cada 15 min hasta resolver).
+- Definido que cada alerta incluya enlace a runbook y que `monitoring-log.md` registre solo eventos `critical`.
+- Definido bloque de seguridad operativa: `fail2ban` inicial solo `sshd`, `bantime=1h`, `maxretry=5`, `ignoreip` pendiente.
+- Definido `unattended-upgrades` solo seguridad con ventana nocturna `03:00-05:00` (hora Espana).
+- Condicionado cierre de `PasswordAuthentication` a SSH estable por Tailscale + clave.
+- Añadido control de verificacion real de `PermitRootLogin no` antes de cerrar SSH por contraseña.
+- Definida estrategia de backup/restore en 3 fases: PostgreSQL, volumenes de apps (`n8n-data`, `openclaw-data`) y configuracion de `/opt/infra` sin secretos.
+- Definida frecuencia diaria y retencion de 30 dias para las tres fases.
+- Definido horario escalonado (hora Espana): `04:00` (F1), `04:30` (F2), `05:00` (F3).
+- Definida compresion `.tar.gz` para fases 2 y 3.
+- Definido checksum `sha256` para backups en todas las fases.
+- Añadido recordatorio de primera prueba completa de restore sin periodicidad fija.
+- Definido bloque operativo Slack/n8n: canal dedicado `#vareia-alerts`.
+- Definido formato de alertas con prefijo de severidad (`[WARNING]` / `[CRITICAL]`) y campos minimos.
+- Definido seguimiento de `critical` en hilo hasta cierre y sin `@channel` por ahora.
+- Definido resumen diario de estado/alertas en Slack a las `09:00` (hora Espana).
+- Definida rotacion de logs de Nginx: diaria, retencion 14 dias, compresion `.gz`, limite 50MB por archivo.
+- Confirmado `ignoreip` de fail2ban en estado pendiente hasta disponer de rangos reales.
