@@ -13,6 +13,8 @@ Formato de fecha: `YYYY-MM-DD`.
 - Verificada conectividad privada por Tailscale sirviendo HTTP de prueba en `100.91.154.73:8080`.
 - Completado Paso 3 (Redes Docker): creadas redes `infra-net` y `proxy-net`.
 - Validacion de redes Docker completada con `docker network ls`.
+- Completado despliegue inicial de PostgreSQL compartido (`postgres-shared`, `postgres:17`) en `/opt/infra/postgres`.
+- Validado estado `healthy` del contenedor y creado esquema inicial de credenciales/BBDD: `usr_n8n`/`app_n8n` y `usr_openclaw`/`app_openclaw`.
 - Definido alcance funcional del VPS:
   - reverse-proxy
   - automation

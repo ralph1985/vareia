@@ -7,7 +7,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 1. [x] Docker Engine + Docker Compose (oficial)
 2. [x] Tailscale
 3. [x] Redes Docker (`infra-net`, `proxy-net`)
-4. [ ] PostgreSQL compartido (`postgres-shared`, `postgres:17`)
+4. [x] PostgreSQL compartido (`postgres-shared`, `postgres:17`)
 5. [ ] n8n (`automation`, con PostgreSQL)
 6. [ ] Reverse proxy (`reverse-proxy-nginx`)
 7. [ ] Orchestrator (`orchestrator-openclaw`)
@@ -36,17 +36,17 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Paso 4 - PostgreSQL
 
-- [ ] Crear stack `/opt/infra/postgres`.
-- [ ] Definir `compose.yml` con imagen fija `postgres:17`.
-- [ ] Definir servicio `postgres-shared` solo en `infra-net`.
-- [ ] Mantener puerto interno `5432` sin publicar al host.
-- [ ] Usar `POSTGRES_DB=postgres` solo para bootstrap.
-- [ ] Definir `.env` y `.env.example` (sin secretos).
-- [ ] Crear volumen persistente `postgres-data`.
-- [ ] Mantener configuracion inicial por defecto.
-- [ ] Definir limites iniciales (`0.5 CPU`, `512MB RAM`).
-- [ ] Levantar stack con `docker compose --project-name postgres up -d`.
-- [ ] Crear credenciales de apps (`app_<project_slug>` / `usr_<project_slug>`).
+- [x] Crear stack `/opt/infra/postgres`.
+- [x] Definir `compose.yml` con imagen fija `postgres:17`.
+- [x] Definir servicio `postgres-shared` solo en `infra-net`.
+- [x] Mantener puerto interno `5432` sin publicar al host.
+- [x] Usar `POSTGRES_DB=postgres` solo para bootstrap.
+- [x] Definir `.env` y `.env.example` (sin secretos).
+- [x] Crear volumen persistente `postgres-data`.
+- [x] Mantener configuracion inicial por defecto.
+- [x] Definir limites iniciales (`0.5 CPU`, `512MB RAM`).
+- [x] Levantar stack con `docker compose --project-name postgres up -d`.
+- [x] Crear credenciales de apps (`app_<project_slug>` / `usr_<project_slug>`).
 - [ ] Dejar logs de consultas lentas como tarea futura (no ahora).
 - [ ] Implementar backup por script de host + cron diario `04:00` (hora Espana).
 - [ ] Guardar backups en `/opt/infra/backups/postgres`.

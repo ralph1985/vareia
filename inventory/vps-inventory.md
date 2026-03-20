@@ -35,7 +35,7 @@
 | Nginx | 80/443 (futuro) | pendiente | `reverse-proxy-nginx`, `nginx:1.28-alpine`, en `proxy-net` + `infra-net` |
 | n8n | privado | pendiente | `automation-n8n`; `5678` interno; `n8n-data`; versión fija; DB `app_n8n` |
 | OpenClaw | privado | pendiente | `orchestrator-openclaw`; `openclaw-data`; DB `app_openclaw`; solo Tailscale |
-| PostgreSQL compartido | interno | pendiente | `postgres:17`, `postgres-shared`, `5432` interno, `postgres-data`, sin exponer |
+| PostgreSQL compartido | interno | instalado | `postgres:17`, `postgres-shared` healthy, `5432` interno, `postgres-data`, sin exponer |
 
 ## Backups
 
