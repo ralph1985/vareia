@@ -5,6 +5,9 @@ Formato de fecha: `YYYY-MM-DD`.
 ## 2026-03-20
 
 - Alta del proyecto Vareia para seguimiento del VPS.
+- Completado Paso 1 (Docker): Docker Engine y plugin `docker compose` instalados desde repositorio oficial.
+- Validacion Docker completada con `docker --version`, `docker compose version` y `docker run --rm hello-world`.
+- Usuario operativo `monis` añadido al grupo `docker` y cambio validado en nueva sesion SSH.
 - Definido alcance funcional del VPS:
   - reverse-proxy
   - automation

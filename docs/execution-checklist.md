@@ -4,7 +4,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Orden confirmado
 
-1. [ ] Docker Engine + Docker Compose (oficial)
+1. [x] Docker Engine + Docker Compose (oficial)
 2. [ ] Tailscale
 3. [ ] Redes Docker (`infra-net`, `proxy-net`)
 4. [ ] PostgreSQL compartido (`postgres-shared`, `postgres:17`)
@@ -16,10 +16,10 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Paso 1 - Docker
 
-- [ ] Instalar Docker Engine desde repo oficial.
-- [ ] Instalar plugin `docker compose`.
-- [ ] Añadir usuario operativo al grupo `docker`.
-- [ ] Verificar `docker --version` y `docker compose version`.
+- [x] Instalar Docker Engine desde repo oficial.
+- [x] Instalar plugin `docker compose`.
+- [x] Añadir usuario operativo al grupo `docker`.
+- [x] Verificar `docker --version` y `docker compose version`.
 
 ## Paso 2 - Tailscale
 
@@ -159,6 +159,6 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Registro de cierre
 
-- [ ] Actualizar `changes/CHANGELOG.md`.
-- [ ] Actualizar `inventory/vps-inventory.md`.
+- [x] Actualizar `changes/CHANGELOG.md`.
+- [x] Actualizar `inventory/vps-inventory.md`.
 - [ ] Registrar incidencias en `incidents/INCIDENTS.md` si aplica.
