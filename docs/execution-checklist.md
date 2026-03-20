@@ -5,7 +5,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 ## Orden confirmado
 
 1. [x] Docker Engine + Docker Compose (oficial)
-2. [ ] Tailscale
+2. [x] Tailscale
 3. [ ] Redes Docker (`infra-net`, `proxy-net`)
 4. [ ] PostgreSQL compartido (`postgres-shared`, `postgres:17`)
 5. [ ] n8n (`automation`, con PostgreSQL)
@@ -23,9 +23,9 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Paso 2 - Tailscale
 
-- [ ] Instalar Tailscale.
-- [ ] Conectar nodo al tailnet.
-- [ ] Verificar acceso privado al VPS.
+- [x] Instalar Tailscale.
+- [x] Conectar nodo al tailnet.
+- [x] Verificar acceso privado al VPS.
 - [ ] Mantener `PasswordAuthentication` temporalmente (recordatorio pendiente).
 
 ## Paso 3 - Redes Docker

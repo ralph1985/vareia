@@ -8,6 +8,9 @@ Formato de fecha: `YYYY-MM-DD`.
 - Completado Paso 1 (Docker): Docker Engine y plugin `docker compose` instalados desde repositorio oficial.
 - Validacion Docker completada con `docker --version`, `docker compose version` y `docker run --rm hello-world`.
 - Usuario operativo `monis` añadido al grupo `docker` y cambio validado en nueva sesion SSH.
+- Completado Paso 2 (Tailscale): `tailscale` 1.96.2 instalado y nodo autenticado en tailnet.
+- Validacion Tailscale completada: `tailscale status`, IPs `100.x`/`fd7a::`, `tailscaled` en estado `enabled` y `active`.
+- Verificada conectividad privada por Tailscale sirviendo HTTP de prueba en `100.91.154.73:8080`.
 - Definido alcance funcional del VPS:
   - reverse-proxy
   - automation

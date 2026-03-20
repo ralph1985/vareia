@@ -25,5 +25,5 @@
 
 ## Objetivos de red
 
-- [ ] Instalar y configurar Tailscale.
-- [ ] Definir política futura: acceso administrativo solo desde dispositivos autorizados por Tailscale.
+- [x] Instalar y configurar Tailscale.
+- [x] Definir política futura: acceso administrativo solo desde dispositivos autorizados por Tailscale.
