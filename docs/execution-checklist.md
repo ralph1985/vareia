@@ -6,7 +6,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 1. [x] Docker Engine + Docker Compose (oficial)
 2. [x] Tailscale
-3. [ ] Redes Docker (`infra-net`, `proxy-net`)
+3. [x] Redes Docker (`infra-net`, `proxy-net`)
 4. [ ] PostgreSQL compartido (`postgres-shared`, `postgres:17`)
 5. [ ] n8n (`automation`, con PostgreSQL)
 6. [ ] Reverse proxy (`reverse-proxy-nginx`)
@@ -30,9 +30,9 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Paso 3 - Redes Docker
 
-- [ ] Crear red `infra-net`.
-- [ ] Crear red `proxy-net`.
-- [ ] Verificar existencia de ambas redes.
+- [x] Crear red `infra-net`.
+- [x] Crear red `proxy-net`.
+- [x] Verificar existencia de ambas redes.
 
 ## Paso 4 - PostgreSQL
 

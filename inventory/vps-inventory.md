@@ -68,6 +68,7 @@
 
 - `infra-net` (interna)
 - `proxy-net` (frontal)
+- Estado: creadas y verificadas con `docker network ls`.
 
 ## Estándares de operación
 
