@@ -15,6 +15,8 @@ Formato de fecha: `YYYY-MM-DD`.
 - Validacion de redes Docker completada con `docker network ls`.
 - Completado despliegue inicial de PostgreSQL compartido (`postgres-shared`, `postgres:17`) en `/opt/infra/postgres`.
 - Validado estado `healthy` del contenedor y creado esquema inicial de credenciales/BBDD: `usr_n8n`/`app_n8n` y `usr_openclaw`/`app_openclaw`.
+- Completado despliegue inicial de n8n (`automation-n8n`, `n8nio/n8n:1.91.3`) en `/opt/infra/automation`.
+- Validado estado `healthy` de n8n, ejecución de migraciones y conectividad con PostgreSQL `app_n8n`.
 - Definido alcance funcional del VPS:
   - reverse-proxy
   - automation

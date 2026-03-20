@@ -8,7 +8,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 2. [x] Tailscale
 3. [x] Redes Docker (`infra-net`, `proxy-net`)
 4. [x] PostgreSQL compartido (`postgres-shared`, `postgres:17`)
-5. [ ] n8n (`automation`, con PostgreSQL)
+5. [x] n8n (`automation`, con PostgreSQL)
 6. [ ] Reverse proxy (`reverse-proxy-nginx`)
 7. [ ] Orchestrator (`orchestrator-openclaw`)
 8. [ ] Apps (estructura base para futuros servicios)
@@ -57,20 +57,20 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Paso 5 - n8n
 
-- [ ] Crear stack `/opt/infra/automation`.
-- [ ] Definir `compose.yml` con versión fija de n8n.
-- [ ] Definir nombre de contenedor: `automation-n8n`.
-- [ ] Definir volumen persistente `n8n-data`.
-- [ ] Conectar solo a `infra-net`.
-- [ ] Mantener puerto interno `5678` sin publicar.
-- [ ] Configurar DB `app_n8n` + usuario `usr_n8n`.
-- [ ] Definir `.env` y `.env.example` (sin secretos).
-- [ ] Arrancar con `docker compose --project-name automation up -d`.
-- [ ] Configurar dependencia de arranque sobre `postgres-shared` saludable.
-- [ ] Validar healthcheck y reinicio `unless-stopped`.
-- [ ] Definir limites iniciales (`0.5 CPU`, `512MB RAM`).
-- [ ] Definir `EXECUTIONS_MODE=regular`.
-- [ ] Activar limpieza de ejecuciones con retencion inicial de 14 dias.
+- [x] Crear stack `/opt/infra/automation`.
+- [x] Definir `compose.yml` con versión fija de n8n.
+- [x] Definir nombre de contenedor: `automation-n8n`.
+- [x] Definir volumen persistente `n8n-data`.
+- [x] Conectar solo a `infra-net`.
+- [x] Mantener puerto interno `5678` sin publicar.
+- [x] Configurar DB `app_n8n` + usuario `usr_n8n`.
+- [x] Definir `.env` y `.env.example` (sin secretos).
+- [x] Arrancar con `docker compose --project-name automation up -d`.
+- [x] Verificar arranque con `postgres-shared` saludable.
+- [x] Validar healthcheck y reinicio `unless-stopped`.
+- [x] Definir limites iniciales (`0.5 CPU`, `512MB RAM`).
+- [x] Definir `EXECUTIONS_MODE=regular`.
+- [x] Activar limpieza de ejecuciones con retencion inicial de 14 dias.
 
 ## Paso 6 - Reverse Proxy (Nginx)
 
