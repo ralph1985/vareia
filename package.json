@@ -1,0 +1,11 @@
+{
+  "name": "vareia",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Proyecto vareia",
+  "scripts": {
+    "dev": "echo \"Define aquí tu script dev\"",
+    "build": "echo \"Define aquí tu script build\"",
+    "test": "echo \"Define aquí tus tests\""
+  }
+}
