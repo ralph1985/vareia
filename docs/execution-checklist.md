@@ -48,7 +48,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Levantar stack con `docker compose --project-name postgres up -d`.
 - [x] Crear credenciales de apps (`app_<project_slug>` / `usr_<project_slug>`).
 - [ ] Dejar logs de consultas lentas como tarea futura (no ahora).
-- [ ] Implementar backup por script de host + cron diario `04:00` (hora Espana).
+- [ ] Implementar backup por script de host + cron diario `<hora-backup-f1>`.
 - [ ] Guardar backups en `/opt/infra/backups/postgres`.
 - [ ] Nombre de backup: `YYYYMMDD-HHMM-app_<project>.sql.gz`.
 - [ ] Ejecutar rotacion (>30 dias) tras backup en el mismo cron.
@@ -126,12 +126,12 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [ ] Configurar severidad `critical` (repeticion cada 15 min hasta resolver).
 - [ ] Incluir enlace a runbook en cada alerta.
 - [ ] Registrar en `monitoring/monitoring-log.md` solo eventos `critical`.
-- [ ] Definir canal de alertas `#VareIA-alerts`.
+- [ ] Definir canal de alertas `<canal-alertas>`.
 - [ ] Definir formato de titulo con severidad (`[WARNING]` / `[CRITICAL]`).
 - [ ] Incluir campos minimos: servicio, evento, impacto, timestamp, accion sugerida, enlace runbook.
 - [ ] Abrir hilo de seguimiento para cada evento `critical` hasta cierre.
 - [ ] Mantener sin mencion `@channel` por ahora.
-- [ ] Configurar resumen diario en Slack a las `09:00` (hora Espana).
+- [ ] Configurar resumen diario en Slack a las `<hora-resumen-diario>`.
 
 ## Paso 10 - Backups y restore (multifase)
 
@@ -142,9 +142,9 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [ ] Frecuencia diaria en fases 1/2/3.
 - [ ] Retencion de 30 dias en fases 1/2/3.
 - [ ] Definir horario escalonado:
-  - [ ] Fase 1 a las `04:00`
-  - [ ] Fase 2 a las `04:30`
-  - [ ] Fase 3 a las `05:00`
+  - [ ] Fase 1 a las `<hora-backup-f1>`
+  - [ ] Fase 2 a las `<hora-backup-f2>`
+  - [ ] Fase 3 a las `<hora-backup-f3>`
 - [ ] Comprimir fases 2 y 3 en `.tar.gz`.
 - [ ] Generar checksum `sha256` por backup en todas las fases.
 - [ ] Mantener recordatorio de primera prueba de restore completa (sin periodicidad fija).
@@ -155,7 +155,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Configurar `fail2ban`: `bantime=1h`, `maxretry=5`.
 - [ ] Mantener `ignoreip` en pendiente hasta disponer de rangos reales.
 - [x] Activar `unattended-upgrades` (solo seguridad).
-- [x] Definir ventana de parches `03:00-05:00` (hora Espana).
+- [x] Definir ventana de parches `<ventana-nocturna>`.
 - [x] Recordatorio pendiente: deshabilitar SSH por password cuando haya SSH estable por Tailscale + clave.
 - [x] Verificar `PermitRootLogin no` con prueba real antes de cerrar SSH por contraseña.
 

@@ -4,7 +4,7 @@
 
 - Gestión de alertas: `n8n`.
 - Canal de notificación: `Slack`.
-- Canal objetivo: `#VareIA-alerts`.
+- Canal objetivo: `<canal-alertas>`.
 - Estado actual: pendiente de implementación (canal/webhook aún no creados).
 - Frecuencia de checks técnicos: cada `15 minutos` (modo conservador).
 - Checks iniciales:
@@ -28,7 +28,7 @@
   - `critical`: abrir hilo de seguimiento hasta cierre
   - sin mencion `@channel` por ahora
 - Resumen diario:
-  - enviar resumen diario a las `09:00` (hora Espana)
+  - enviar resumen diario a las `<hora-resumen-diario>`
   - incluir estado general + alertas del dia
 - Trazabilidad:
   - incluir enlace a runbook/acción recomendada en cada alerta
