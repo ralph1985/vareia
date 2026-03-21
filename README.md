@@ -1,64 +1,46 @@
 # VareIA
 
-Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, monitorización y arquitectura de despliegue.
+VareIA es el repositorio de infraestructura y operación de un VPS para servicios autoalojados orientados a automatización y orquestación con IA.
 
-## Estructura
+El objetivo es disponer de una base reproducible, segura y mantenible para desplegar servicios en contenedores con separación por stacks, documentación operativa y automatización progresiva.
 
-- `docs/`: documentación general y runbook operativo.
-- `docs/architecture.md`: diagrama Mermaid de arquitectura actual y flujo privado por Tailscale.
-- `docs/execution-checklist.md`: checklist ejecutable del despliegue por fases.
-- `docs/bootstrap-host.md`: guía del bootstrap reproducible de host base.
-- `docs/automation.md`: guía de automatización de stacks y despliegue multi-servidor.
+## Alcance
+
+- Bootstrap de host base (seguridad, paquetes y base operativa).
+- Despliegue por stacks Docker.
+- Documentación de arquitectura, operación y troubleshooting.
+- Registro de cambios, incidencias y monitorización.
+
+## Arquitectura base
+
+- Stacks: `reverse-proxy`, `automation`, `orchestrator`, `apps`.
+- Redes: `infra-net` (interna) y `proxy-net` (frontal).
+- Principio de despliegue: servicios desacoplados por stack con configuración en `.env`.
+- Persistencia y datos: volúmenes Docker y backups por fases.
+- Acceso privado administrativo: red privada (Tailscale).
+
+Diagrama: `docs/architecture.md`.
+
+## Estructura del repositorio
+
+- `docs/`: documentación general, arquitectura y runbook.
 - `inventory/`: inventario técnico del VPS y servicios.
 - `checklists/`: checklists de despliegue, hardening y mantenimiento.
-- `changes/`: registro cronológico de cambios.
+- `changes/`: changelog cronológico de infraestructura.
 - `incidents/`: incidencias y postmortems.
-- `monitoring/`: métricas, alertas y revisiones periódicas.
-- `scripts/`: automatizaciones operativas (bootstrap, backup, restore, etc.).
-- `configs/servers/`: variables por servidor (solo ejemplos versionados, sin secretos reales).
+- `monitoring/`: métricas y revisiones periódicas.
+- `scripts/`: automatizaciones operativas.
+- `configs/servers/`: variables por servidor (`*.example.env` versionados).
 
-## Estado actual
+## Cómo navegar esta documentación
 
-- Proveedor: Cubepath (`España, Barcelona`).
-- Plan: `gp.nano`.
-- VPS: `Ubuntu 24 LTS` con `1 CPU`, `2 GB RAM`, `40 GB` disco.
-- Coste: `~5 EUR/mes`.
-- Red actual: `UFW` activo; solo puerto SSH personalizado `<SSH_PORT>/tcp` abierto (`22/tcp` cerrado).
-- Acceso actual: SSH operativo desde equipo local con usuario no-root y clave pública.
-- Acceso de contingencia: consola web del proveedor.
+1. `docs/architecture.md` para entender el diseño general.
+2. `docs/bootstrap-host.md` para preparar un host base reproducible.
+3. `docs/execution-checklist.md` para ejecutar despliegue por fases.
+4. `docs/runbook.md` para operación diaria y troubleshooting.
+5. `inventory/vps-inventory.md` para estado técnico consolidado.
+6. `changes/CHANGELOG.md` para historial de cambios.
 
-## Arquitectura objetivo (stacks)
+## Nota de seguridad del repositorio público
 
-- `reverse-proxy`
-- `automation`
-- `orchestrator`
-- `apps`
-- redes: `infra-net` (interna) y `proxy-net` (frontal)
-
-## Decisiones clave
-
-- Primer paso técnico: instalar `Docker` + `Docker Compose`.
-- `n8n` irá dockerizado en este VPS, en privado, con alertas hacia Slack.
-- `n8n` será el primer servicio real tras redes Docker.
-- OpenClaw será un orquestador multiagente controlado desde Slack.
-- OpenClaw: `orchestrator-openclaw`, privado, desacoplado de n8n (API/webhook), acceso por Tailscale.
-- OpenClaw: DB dedicada `app_openclaw`/`usr_openclaw`, volumen `openclaw-data`, limites `0.25 CPU` + `256MB RAM`.
-- `apps`: reservado para futuros servicios, con estructura por app `/opt/infra/apps/<app-slug>/`.
-- `apps`: cada app con `README`, `compose.yml`, `.env`, `.env.example`, DB dedicada y red por defecto `infra-net`.
-- `apps`: defaults por app `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM`.
-- Seguridad operativa: `fail2ban` (`sshd`, `bantime=1h`, `maxretry=5`) y `unattended-upgrades` solo seguridad (ventana `<ventana-nocturna>` aplicada en timers `apt`).
-- Endurecimiento SSH adicional aplicado: `ssh.socket` en `<SSH_PORT>/tcp` (IPv4/IPv6) con acceso validado en nueva sesion.
-- Backups/restore en 3 fases (PostgreSQL, volumenes, configuracion), diarios, retencion 30 dias, horario escalonado `<hora-backup-f1>/<hora-backup-f2>/<hora-backup-f3>`.
-- Backups fases 2 y 3 en `.tar.gz` + checksum `sha256` en todas las fases.
-- Slack operativo: canal `<canal-alertas>`, severidades `[WARNING]/[CRITICAL]`, `critical` en hilo hasta cierre.
-- Slack operativo: resumen diario a las `<hora-resumen-diario>`, sin `@channel` por ahora.
-- SSH endurecido y validado: acceso operativo por clave pública, `PasswordAuthentication no` y `PermitRootLogin no`.
-- Se usará Tailscale como pieza prioritaria de red tras Docker.
-- Exposición pública futura solo para `reverse-proxy` (80/443) cuando exista dominio.
-- `reverse-proxy`: `reverse-proxy-nginx` con `nginx:1.28-alpine`, doble red (`proxy-net` + `infra-net`).
-- Config de `reverse-proxy` con `nginx.conf` + `conf.d` por servicio y `default-deny.conf`.
-- TLS/Let's Encrypt pospuesto hasta tener dominio y DNS operativos.
-- Variables por stack en `/opt/infra/<stack>/.env` y `.env.example` sin secretos.
-- Imágenes con versión fija para `n8n`, `nginx` y `postgres`.
-- Naming con prefijo de stack y arranque con `docker compose --project-name <stack>`.
-- Secretos y datos sensibles fuera de este repositorio público.
+Este repositorio evita publicar secretos y anonimiza detalles operativos sensibles (usuarios, puertos reales, hostnames, horarios exactos y endpoints internos). Los valores reales se mantienen fuera del repositorio.
