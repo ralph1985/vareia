@@ -105,6 +105,10 @@
   - Logs en `/opt/infra/reverse-proxy/logs` con rotacion diaria, 14 dias, `.gz`, limite 50MB
   - TLS pendiente hasta dominio y DNS operativos
 - Monitorizacion y alertas:
+  - heartbeat diario operativo: host -> webhook n8n -> Slack
+  - script heartbeat en host: `/opt/infra/scripts/heartbeat.sh`
+  - cron root activo para heartbeat diario (log en `/var/log/heartbeat.log`)
+  - webhook de heartbeat protegido por token (`X-Heartbeat-Token`)
   - checks tecnicos cada 15 minutos (modo conservador)
   - checks: `uptime`, disco, RAM y salud de `postgres`/`n8n`/`nginx`
   - alerta inmediata por caida de contenedor critico

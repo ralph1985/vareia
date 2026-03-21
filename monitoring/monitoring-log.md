@@ -5,7 +5,12 @@
 - Gestión de alertas: `n8n`.
 - Canal de notificación: `Slack`.
 - Canal objetivo: `<canal-alertas>`.
-- Estado actual: pendiente de implementación (canal/webhook aún no creados).
+- Estado actual: heartbeat diario operativo (host -> webhook n8n -> Slack).
+- Implementación actual:
+  - workflow activo: `heartbeat-webhook`
+  - script host: `/opt/infra/scripts/heartbeat.sh`
+  - cron root diario con salida a `/var/log/heartbeat.log`
+  - webhook protegido por `X-Heartbeat-Token`
 - Frecuencia de checks técnicos: cada `15 minutos` (modo conservador).
 - Checks iniciales:
   - `uptime` VPS

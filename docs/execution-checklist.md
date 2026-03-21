@@ -115,6 +115,9 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Paso 9 - Monitorizacion y alertas
 
+- [x] Implementar heartbeat diario (host -> webhook n8n -> Slack).
+- [x] Proteger webhook de heartbeat con token por header (`X-Heartbeat-Token`).
+- [x] Programar heartbeat diario por cron en host.
 - [ ] Configurar checks tecnicos cada 15 minutos.
 - [ ] Configurar checks de `uptime`, disco, RAM y salud de `postgres`/`n8n`/`nginx`.
 - [ ] Configurar alerta inmediata por caída de contenedor critico.
@@ -126,7 +129,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [ ] Configurar severidad `critical` (repeticion cada 15 min hasta resolver).
 - [ ] Incluir enlace a runbook en cada alerta.
 - [ ] Registrar en `monitoring/monitoring-log.md` solo eventos `critical`.
-- [ ] Definir canal de alertas `<canal-alertas>`.
+- [x] Definir canal de alertas `<canal-alertas>`.
 - [ ] Definir formato de titulo con severidad (`[WARNING]` / `[CRITICAL]`).
 - [ ] Incluir campos minimos: servicio, evento, impacto, timestamp, accion sugerida, enlace runbook.
 - [ ] Abrir hilo de seguimiento para cada evento `critical` hasta cierre.

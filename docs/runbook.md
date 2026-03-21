@@ -92,6 +92,10 @@ journalctl -p err -n 100
 - `apps`: cada app con DB dedicada (`app_<slug>` / `usr_<slug>`).
 - `apps`: defaults operativos por app: `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM`.
 - Monitorizacion (n8n -> Slack):
+  - heartbeat diario operativo (host -> webhook n8n -> Slack)
+  - script de host: `/opt/infra/scripts/heartbeat.sh`
+  - cron operativo diario en root para ejecutar `/opt/infra/scripts/heartbeat.sh` (log en `/var/log/heartbeat.log`)
+  - autenticacion de heartbeat por header `X-Heartbeat-Token`
   - checks cada 15 minutos (modo conservador)
   - checks: `uptime`, disco, RAM, salud de `postgres`/`n8n`/`nginx`
   - alerta inmediata por caída de contenedor crítico

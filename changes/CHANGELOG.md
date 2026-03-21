@@ -4,6 +4,13 @@ Formato de fecha: `YYYY-MM-DD`.
 
 ## 2026-03-21
 
+- Implementado heartbeat diario de monitorizacion: host -> webhook n8n -> Slack.
+- Añadido script de host `/opt/infra/scripts/heartbeat.sh` para recopilar `hostname`, `uptime`, RAM, disco y estado de contenedores.
+- Activado cron root diario para heartbeat con log en `/var/log/heartbeat.log`.
+- Protegido webhook de heartbeat con token por header `X-Heartbeat-Token`.
+- Corregida estabilidad de n8n tras proxy inverso:
+  - `N8N_PROXY_HOPS=1` en stack `automation`
+  - soporte WebSocket en vhost `n8n-private` de Nginx (`Upgrade`/`Connection upgrade`)
 - SSH movido de `22/tcp` a puerto personalizado `<SSH_PORT>/tcp` con override de `ssh.socket` (IPv4/IPv6).
 - Validado acceso real en nueva sesion por `ssh -p <SSH_PORT>`.
 - Cerrado `22/tcp` en UFW; regla de entrada SSH mantenida solo en `<SSH_PORT>/tcp`.
