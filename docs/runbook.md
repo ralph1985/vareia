@@ -168,8 +168,11 @@ journalctl -p err -n 100
 
 ## Recordatorios
 
-- Revisar y simplificar configuración SSH para dejar `PasswordAuthentication no` sin ambigüedad en includes.
-- Verificar `PermitRootLogin no` con prueba real antes de cerrar SSH por contraseña.
+- SSH endurecido y validado en producción:
+  - `PasswordAuthentication no`
+  - `AuthenticationMethods publickey`
+  - `PermitRootLogin no`
+  - acceso real confirmado en nueva sesión SSH por clave pública
 
 ## Política de secretos
 

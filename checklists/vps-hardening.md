@@ -1,8 +1,8 @@
 # Checklist Hardening VPS
 
 - [x] Usuario admin no-root creado. (nombre no documentado)
-- [ ] Login SSH por contraseña deshabilitado. (condicionado a SSH estable por Tailscale + clave)
-- [ ] Login SSH de root deshabilitado (pendiente verificación efectiva con prueba real).
+- [x] Login SSH por contraseña deshabilitado.
+- [x] Login SSH de root deshabilitado (verificación efectiva realizada).
 - [ ] Puerto SSH restringido por firewall/IP cuando aplique.
 - [x] UFW/iptables configurado con política por defecto `deny`.
 - [x] Fail2ban instalado y activo (inicialmente solo `sshd`).

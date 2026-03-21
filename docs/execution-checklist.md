@@ -26,7 +26,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Instalar Tailscale.
 - [x] Conectar nodo al tailnet.
 - [x] Verificar acceso privado al VPS.
-- [ ] Mantener `PasswordAuthentication` temporalmente (recordatorio pendiente).
+- [x] Mantener `PasswordAuthentication` temporalmente (cerrado: ya fijado en `no` tras validación de acceso por clave).
 
 ## Paso 3 - Redes Docker
 
@@ -155,7 +155,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Activar `unattended-upgrades` (solo seguridad).
 - [x] Definir ventana de parches `03:00-05:00` (hora Espana).
 - [x] Recordatorio pendiente: deshabilitar SSH por password cuando haya SSH estable por Tailscale + clave.
-- [ ] Verificar `PermitRootLogin no` con prueba real antes de cerrar SSH por contraseña.
+- [x] Verificar `PermitRootLogin no` con prueba real antes de cerrar SSH por contraseña.
 
 ## Registro de cierre
 

@@ -18,7 +18,7 @@
 - Subdominios: ninguno
 - Firewall activo: sí (`ufw allow OpenSSH` + `ufw enable`)
 - Puertos abiertos: solo 22
-- SSH por contraseña deshabilitado (usuario operativo): efectivo por política de autenticación por clave pública
+- SSH por contraseña deshabilitado: sí (`PasswordAuthentication no`)
 - SSH root (`PermitRootLogin no`): configurado y validado en comprobación de configuración efectiva
 - IP pública: omitida (repositorio público)
 - Usuario admin no-root: omitido (repositorio público)
@@ -124,8 +124,8 @@
   - `ignoreip` pendiente con rangos de confianza (sin definir aun)
   - `unattended-upgrades` solo seguridad
   - ventana de parches: `03:00-05:00` (hora Espana), aplicada mediante overrides de `apt-daily*.timer`
-  - cierre de `PasswordAuthentication` condicionado a SSH estable por Tailscale + clave
-  - verificacion real de `PermitRootLogin no` pendiente antes del cierre por contraseña
+  - `PasswordAuthentication no` aplicado y validado
+  - `PermitRootLogin no` validado en comprobación efectiva y acceso real
 
 ## Convenciones de base de datos
 

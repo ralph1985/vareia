@@ -2,6 +2,14 @@
 
 Formato de fecha: `YYYY-MM-DD`.
 
+## 2026-03-21
+
+- Cerrada ambigüedad de SSH en includes: `/etc/ssh/sshd_config.d/50-cloud-init.conf` sin directivas activas de autenticación.
+- Validación efectiva SSH completada: `PasswordAuthentication no`, `AuthenticationMethods publickey`, `PermitRootLogin no`.
+- Validado acceso real por clave pública en nueva sesión SSH tras reinicio de servicio.
+- Ajustada ventana de parches automáticos a `03:00-05:00` (UTC del host) mediante overrides de `apt-daily.timer` y `apt-daily-upgrade.timer`.
+- Alineada documentación de inventario/runbook/checklists con estado real de hardening y acceso SSH.
+
 ## 2026-03-20
 
 - Alta del proyecto Vareia para seguimiento del VPS.

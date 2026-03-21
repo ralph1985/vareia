@@ -50,7 +50,7 @@ Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, moni
 - Backups fases 2 y 3 en `.tar.gz` + checksum `sha256` en todas las fases.
 - Slack operativo: canal `#vareia-alerts`, severidades `[WARNING]/[CRITICAL]`, `critical` en hilo hasta cierre.
 - Slack operativo: resumen diario a las `09:00` (hora Espana), sin `@channel` por ahora.
-- Cierre de SSH por contraseña pendiente hasta estabilizar acceso por Tailscale + clave.
+- SSH endurecido y validado: acceso operativo por clave pública, `PasswordAuthentication no` y `PermitRootLogin no`.
 - Se usará Tailscale como pieza prioritaria de red tras Docker.
 - Exposición pública futura solo para `reverse-proxy` (80/443) cuando exista dominio.
 - `reverse-proxy`: `reverse-proxy-nginx` con `nginx:1.28-alpine`, doble red (`proxy-net` + `infra-net`).
