@@ -119,8 +119,8 @@ journalctl -p err -n 100
   - `/opt/infra/reverse-proxy/nginx.conf`
   - `/opt/infra/reverse-proxy/conf.d/*.conf`
 - `reverse-proxy`: incluir `default-deny.conf` desde inicio.
-- `reverse-proxy`: plantilla de vhost privada para `n8n` (documental).
-- `reverse-proxy`: logs en `/opt/infra/reverse-proxy/logs` con rotacion pendiente.
+- `reverse-proxy`: plantilla de vhost privada para `n8n` activa.
+- `reverse-proxy`: logs en `/opt/infra/reverse-proxy/logs`; rotacion pendiente.
 - `reverse-proxy`: rotacion de logs definida:
   - diaria
   - retencion 14 dias

@@ -16,6 +16,7 @@ What it does:
   2) Ensures Docker networks infra-net/proxy-net.
   3) Deploys PostgreSQL stack.
   4) Deploys n8n stack.
+  5) Deploys reverse-proxy stack.
 EOF
 }
 
@@ -50,6 +51,9 @@ log "Deploying PostgreSQL stack..."
 
 log "Deploying n8n stack..."
 "${SCRIPT_DIR}/stacks/n8n.sh" --env-file "${ENV_FILE}"
+
+log "Deploying reverse-proxy stack..."
+"${SCRIPT_DIR}/stacks/reverse-proxy.sh" --env-file "${ENV_FILE}"
 
 log "Done. Current stack status:"
 docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'

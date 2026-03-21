@@ -33,7 +33,7 @@
 | Docker Engine | - | instalado | Docker CE 29.3.0 (repo oficial), validado con `hello-world` |
 | Docker Compose | - | instalado | Plugin `docker compose` v5.1.1 |
 | Tailscale | 100.x / fd7a:: | instalado | `tailscale` 1.96.2, nodo conectado al tailnet, `tailscaled` enabled/active |
-| Nginx | 80/443 (futuro) | pendiente | `reverse-proxy-nginx`, `nginx:1.28-alpine`, en `proxy-net` + `infra-net` |
+| Nginx | privado | instalado | `reverse-proxy-nginx` healthy; `nginx:1.28-alpine`; en `proxy-net` + `infra-net`; sin puertos publicados |
 | n8n | privado | instalado | `automation-n8n` healthy; `5678` interno; `n8n-data`; `n8nio/n8n:1.91.3`; DB `app_n8n` |
 | OpenClaw | privado | pendiente | `orchestrator-openclaw`; `openclaw-data`; DB `app_openclaw`; solo Tailscale |
 | PostgreSQL compartido | interno | instalado | `postgres:17`, `postgres-shared` healthy, `5432` interno, `postgres-data`, sin exponer |

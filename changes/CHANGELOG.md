@@ -9,6 +9,10 @@ Formato de fecha: `YYYY-MM-DD`.
 - Validado acceso real por clave pública en nueva sesión SSH tras reinicio de servicio.
 - Ajustada ventana de parches automáticos a `03:00-05:00` (UTC del host) mediante overrides de `apt-daily.timer` y `apt-daily-upgrade.timer`.
 - Alineada documentación de inventario/runbook/checklists con estado real de hardening y acceso SSH.
+- Añadido script `scripts/stacks/reverse-proxy.sh` para despliegue idempotente de `reverse-proxy-nginx`.
+- Actualizado `run-all.sh` para incluir despliegue de `reverse-proxy` junto a PostgreSQL y n8n.
+- Desplegado `reverse-proxy-nginx` en `proxy-net` + `infra-net` y validado estado `healthy`.
+- Validada ruta privada a n8n via reverse-proxy (`Host: n8n.local` -> `/healthz` devuelve `{"status":"ok"}`).
 
 ## 2026-03-20
 

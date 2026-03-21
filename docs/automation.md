@@ -27,7 +27,8 @@ vi configs/servers/vareia-prod.env
 
 - `scripts/stacks/postgres.sh`: crea stack PostgreSQL + credenciales y BDs de apps.
 - `scripts/stacks/n8n.sh`: crea stack n8n conectado a PostgreSQL.
-- `scripts/run-all.sh`: orquesta redes Docker + PostgreSQL + n8n.
+- `scripts/stacks/reverse-proxy.sh`: crea stack reverse proxy privado (`reverse-proxy-nginx`) para enrutar a servicios internos.
+- `scripts/run-all.sh`: orquesta redes Docker + PostgreSQL + n8n + reverse-proxy.
 
 ## Re-ejecución segura
 

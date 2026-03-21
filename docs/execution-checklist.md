@@ -74,18 +74,18 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Paso 6 - Reverse Proxy (Nginx)
 
-- [ ] Crear stack `/opt/infra/reverse-proxy`.
-- [ ] Definir `compose.yml` con imagen fija `nginx:1.28-alpine`.
-- [ ] Definir nombre de contenedor: `reverse-proxy-nginx`.
-- [ ] Conectar a `proxy-net` y `infra-net`.
-- [ ] Definir `/opt/infra/reverse-proxy/nginx.conf`.
-- [ ] Definir `conf.d/*.conf` con un archivo por servicio.
-- [ ] Incluir `default-deny.conf`.
-- [ ] Incluir plantilla de vhost privado para `n8n`.
-- [ ] Definir logs en `/opt/infra/reverse-proxy/logs`.
+- [x] Crear stack `/opt/infra/reverse-proxy`.
+- [x] Definir `compose.yml` con imagen fija `nginx:1.28-alpine`.
+- [x] Definir nombre de contenedor: `reverse-proxy-nginx`.
+- [x] Conectar a `proxy-net` y `infra-net`.
+- [x] Definir `/opt/infra/reverse-proxy/nginx.conf`.
+- [x] Definir `conf.d/*.conf` con un archivo por servicio.
+- [x] Incluir `default-deny.conf`.
+- [x] Incluir plantilla de vhost privado para `n8n`.
+- [x] Definir logs en `/opt/infra/reverse-proxy/logs`.
 - [ ] Configurar rotacion de logs Nginx: diaria, 14 dias, compresion `.gz`, limite 50MB.
-- [ ] Mantener puertos `80/443` cerrados hasta dominio y DNS operativos.
-- [ ] Posponer TLS/Let's Encrypt hasta dominio y DNS operativos.
+- [x] Mantener puertos `80/443` cerrados hasta dominio y DNS operativos.
+- [x] Posponer TLS/Let's Encrypt hasta dominio y DNS operativos.
 
 ## Paso 7 - Orchestrator (OpenClaw)
 
