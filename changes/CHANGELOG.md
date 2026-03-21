@@ -8,6 +8,7 @@ Formato de fecha: `YYYY-MM-DD`.
 - Añadido script de host `/opt/infra/scripts/heartbeat.sh` para recopilar `hostname`, `uptime`, RAM, disco y estado de contenedores.
 - Activado cron root diario para heartbeat con log en `/var/log/heartbeat.log`.
 - Protegido webhook de heartbeat con token por header `X-Heartbeat-Token`.
+- Pendiente operativo abierto: validar en día posterior la ejecución automática del cron de heartbeat y la recepción del mensaje en Slack.
 - Corregida estabilidad de n8n tras proxy inverso:
   - `N8N_PROXY_HOPS=1` en stack `automation`
   - soporte WebSocket en vhost `n8n-private` de Nginx (`Upgrade`/`Connection upgrade`)

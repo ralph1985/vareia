@@ -118,6 +118,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Implementar heartbeat diario (host -> webhook n8n -> Slack).
 - [x] Proteger webhook de heartbeat con token por header (`X-Heartbeat-Token`).
 - [x] Programar heartbeat diario por cron en host.
+- [ ] Validar en fecha posterior la ejecucion real del cron de heartbeat (entrada en `/var/log/heartbeat.log` y mensaje recibido en Slack).
 - [ ] Configurar checks tecnicos cada 15 minutos.
 - [ ] Configurar checks de `uptime`, disco, RAM y salud de `postgres`/`n8n`/`nginx`.
 - [ ] Configurar alerta inmediata por caída de contenedor critico.

@@ -11,6 +11,7 @@
   - script host: `/opt/infra/scripts/heartbeat.sh`
   - cron root diario con salida a `/var/log/heartbeat.log`
   - webhook protegido por `X-Heartbeat-Token`
+  - pendiente: verificar en día posterior que el cron ejecuta automáticamente y entrega heartbeat en Slack
 - Frecuencia de checks técnicos: cada `15 minutos` (modo conservador).
 - Checks iniciales:
   - `uptime` VPS
