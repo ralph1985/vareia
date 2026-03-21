@@ -1,6 +1,6 @@
 # Bootstrap de Host Base
 
-Script para preparar un VPS Ubuntu 24.04 con baseline operativo de Vareia.
+Script para preparar un VPS Ubuntu 24.04 con baseline operativo de VareIA.
 
 ## Archivo
 
@@ -21,7 +21,7 @@ Script para preparar un VPS Ubuntu 24.04 con baseline operativo de Vareia.
 ## Uso
 
 ```bash
-cd /ruta/al/repo/vareia
+cd /ruta/al/repo/VareIA
 sudo ./scripts/bootstrap-host.sh --user monis
 ```
 

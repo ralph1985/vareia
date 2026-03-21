@@ -4,7 +4,7 @@
 
 - Gestión de alertas: `n8n`.
 - Canal de notificación: `Slack`.
-- Canal objetivo: `#vareia-alerts`.
+- Canal objetivo: `#VareIA-alerts`.
 - Estado actual: pendiente de implementación (canal/webhook aún no creados).
 - Frecuencia de checks técnicos: cada `15 minutos` (modo conservador).
 - Checks iniciales:

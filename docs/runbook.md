@@ -3,7 +3,7 @@
 ## Acceso
 
 - Proveedor: Cubepath
-- Hostname: vareia-vps-prod (provisional)
+- Hostname: VareIA-vps-prod (provisional)
 - IP pública: omitida (repositorio público)
 - Usuario admin: omitido (repositorio público)
 - Método de acceso actual: SSH por clave pública (usuario no-root) desde equipo local
@@ -99,7 +99,7 @@ journalctl -p err -n 100
   - severidad `warning` (aviso unico) y `critical` (repeticion cada 15 min)
   - cada alerta con enlace a runbook
   - registro histórico: solo eventos `critical` en `monitoring/monitoring-log.md`
-  - canal objetivo: `#vareia-alerts`
+  - canal objetivo: `#VareIA-alerts`
   - formato de alerta con prefijo (`[WARNING]` / `[CRITICAL]`)
   - payload minimo: servicio, evento, impacto, timestamp, accion sugerida, enlace runbook
   - `critical` abre hilo de seguimiento hasta cierre

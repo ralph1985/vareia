@@ -1,4 +1,4 @@
-# Vareia
+# VareIA
 
 Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, monitorización y arquitectura de despliegue.
 
@@ -49,7 +49,7 @@ Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, moni
 - Seguridad operativa: `fail2ban` (`sshd`, `bantime=1h`, `maxretry=5`) y `unattended-upgrades` solo seguridad (ventana `03:00-05:00` aplicada en timers `apt`).
 - Backups/restore en 3 fases (PostgreSQL, volumenes, configuracion), diarios, retencion 30 dias, horario escalonado `04:00/04:30/05:00`.
 - Backups fases 2 y 3 en `.tar.gz` + checksum `sha256` en todas las fases.
-- Slack operativo: canal `#vareia-alerts`, severidades `[WARNING]/[CRITICAL]`, `critical` en hilo hasta cierre.
+- Slack operativo: canal `#VareIA-alerts`, severidades `[WARNING]/[CRITICAL]`, `critical` en hilo hasta cierre.
 - Slack operativo: resumen diario a las `09:00` (hora Espana), sin `@channel` por ahora.
 - SSH endurecido y validado: acceso operativo por clave pública, `PasswordAuthentication no` y `PermitRootLogin no`.
 - Se usará Tailscale como pieza prioritaria de red tras Docker.

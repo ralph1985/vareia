@@ -2,7 +2,7 @@
 
 ## Datos generales
 
-- Proyecto: Vareia
+- Proyecto: VareIA
 - Entorno: producción
 - Proveedor: Cubepath
 - Plan: gp.nano
@@ -13,7 +13,7 @@
 
 ## Red y acceso
 
-- Hostname: vareia-vps-prod (provisional)
+- Hostname: VareIA-vps-prod (provisional)
 - Dominio principal: pendiente
 - Subdominios: ninguno
 - Firewall activo: sí (`ufw allow OpenSSH` + `ufw enable`)
@@ -110,7 +110,7 @@
   - alerta inmediata por caida de contenedor critico
   - alertas por umbral: RAM > 85% (15 min), Disco > 80% (15 min), CPU > 90% (15 min)
   - severidades: `warning` (aviso unico), `critical` (repeticion cada 15 min)
-  - canal objetivo: `#vareia-alerts`
+  - canal objetivo: `#VareIA-alerts`
   - formato de alerta: prefijo `[WARNING]` / `[CRITICAL]`
   - campos minimos: servicio, evento, impacto, timestamp, accion sugerida, enlace runbook
   - eventos `critical` con hilo de seguimiento hasta cierre

@@ -19,7 +19,7 @@ Formato de fecha: `YYYY-MM-DD`.
 
 ## 2026-03-20
 
-- Alta del proyecto Vareia para seguimiento del VPS.
+- Alta del proyecto VareIA para seguimiento del VPS.
 - Completado Paso 1 (Docker): Docker Engine y plugin `docker compose` instalados desde repositorio oficial.
 - Validacion Docker completada con `docker --version`, `docker compose version` y `docker run --rm hello-world`.
 - Usuario operativo `monis` añadido al grupo `docker` y cambio validado en nueva sesion SSH.
@@ -91,7 +91,7 @@ Formato de fecha: `YYYY-MM-DD`.
 - Definida compresion `.tar.gz` para fases 2 y 3.
 - Definido checksum `sha256` para backups en todas las fases.
 - Añadido recordatorio de primera prueba completa de restore sin periodicidad fija.
-- Definido bloque operativo Slack/n8n: canal dedicado `#vareia-alerts`.
+- Definido bloque operativo Slack/n8n: canal dedicado `#VareIA-alerts`.
 - Definido formato de alertas con prefijo de severidad (`[WARNING]` / `[CRITICAL]`) y campos minimos.
 - Definido seguimiento de `critical` en hilo hasta cierre y sin `@channel` por ahora.
 - Definido resumen diario de estado/alertas en Slack a las `09:00` (hora Espana).

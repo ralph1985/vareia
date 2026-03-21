@@ -13,7 +13,7 @@ flowchart LR
     TSURL["https://<node>.ts.net"]
   end
 
-  subgraph VPS["VPS Vareia"]
+  subgraph VPS["VPS VareIA"]
     TSERVE["tailscale serve :443"]
     LOOP["127.0.0.1:8080 (host)"]
 

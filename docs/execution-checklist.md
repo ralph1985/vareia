@@ -126,7 +126,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [ ] Configurar severidad `critical` (repeticion cada 15 min hasta resolver).
 - [ ] Incluir enlace a runbook en cada alerta.
 - [ ] Registrar en `monitoring/monitoring-log.md` solo eventos `critical`.
-- [ ] Definir canal de alertas `#vareia-alerts`.
+- [ ] Definir canal de alertas `#VareIA-alerts`.
 - [ ] Definir formato de titulo con severidad (`[WARNING]` / `[CRITICAL]`).
 - [ ] Incluir campos minimos: servicio, evento, impacto, timestamp, accion sugerida, enlace runbook.
 - [ ] Abrir hilo de seguimiento para cada evento `critical` hasta cierre.
