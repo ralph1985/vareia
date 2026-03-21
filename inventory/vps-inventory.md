@@ -13,18 +13,18 @@
 
 ## Red y acceso
 
-- Hostname: VareIA-vps-prod (provisional)
+- Hostname: <hostname-interno> (provisional)
 - Dominio principal: pendiente
 - Subdominios: ninguno
-- Firewall activo: sí (`ufw allow OpenSSH` + `ufw enable`)
-- Puertos abiertos: solo 22
+- Firewall activo: si (`ufw enable`; entrada SSH personalizada en `<SSH_PORT>/tcp`)
+- Puertos abiertos: solo `<SSH_PORT>/tcp` (IPv4/IPv6)
 - SSH por contraseña deshabilitado: sí (`PasswordAuthentication no`)
 - SSH root (`PermitRootLogin no`): configurado y validado en comprobación de configuración efectiva
 - IP pública: omitida (repositorio público)
 - Usuario admin no-root: omitido (repositorio público)
 - Método de acceso actual: SSH por clave pública con usuario no-root (equipo local)
 - Acceso de contingencia: consola web del proveedor
-- Objetivo SSH futuro: consolidar configuración SSH para eliminar directivas ambiguas en includes
+- SSH `ssh.socket`: override aplicado para escuchar en `<SSH_PORT>` en lugar de `22`
 
 ## Servicios
 
@@ -44,7 +44,7 @@
 - Frecuencia: diario
 - Retención: 30 días
 - Formato: `pg_dump` comprimido (`.gz`)
-- Ejecucion: script host + cron diario `04:00` (hora Espana)
+- Ejecucion: script host + cron diario `<hora-backup-f1>`
 - Ruta local: `/opt/infra/backups/postgres`
 - Nombre: `YYYYMMDD-HHMM-app_<project>.sql.gz`
 - Rotación local: eliminar copias de más de 30 días
@@ -52,9 +52,9 @@
 - Cifrado: no (por ahora)
 - Última prueba de restore: no realizada
 - Estrategia por fases:
-  - Fase 1: PostgreSQL (`04:00`)
-  - Fase 2: volumenes `n8n-data` + `openclaw-data` (`04:30`, `.tar.gz`)
-  - Fase 3: configuracion `/opt/infra` sin secretos (`05:00`, `.tar.gz`)
+  - Fase 1: PostgreSQL (`<hora-backup-f1>`)
+  - Fase 2: volumenes `n8n-data` + `openclaw-data` (`<hora-backup-f2>`, `.tar.gz`)
+  - Fase 3: configuracion `/opt/infra` sin secretos (`<hora-backup-f3>`, `.tar.gz`)
 - Integridad: checksum `sha256` por backup en todas las fases
 - Restore: primera prueba completa pendiente (sin periodicidad fija)
 
@@ -110,12 +110,12 @@
   - alerta inmediata por caida de contenedor critico
   - alertas por umbral: RAM > 85% (15 min), Disco > 80% (15 min), CPU > 90% (15 min)
   - severidades: `warning` (aviso unico), `critical` (repeticion cada 15 min)
-  - canal objetivo: `#VareIA-alerts`
+  - canal objetivo: `<canal-alertas>`
   - formato de alerta: prefijo `[WARNING]` / `[CRITICAL]`
   - campos minimos: servicio, evento, impacto, timestamp, accion sugerida, enlace runbook
   - eventos `critical` con hilo de seguimiento hasta cierre
   - sin mencion `@channel` por ahora
-  - resumen diario a las `09:00` (hora Espana)
+  - resumen diario a las `<hora-resumen-diario>`
   - alertas con enlace a runbook
   - registro historico solo de eventos `critical`
 - Seguridad operativa:
@@ -123,9 +123,11 @@
   - parametros iniciales: `bantime=1h`, `maxretry=5`
   - `ignoreip` pendiente con rangos de confianza (sin definir aun)
   - `unattended-upgrades` solo seguridad
-  - ventana de parches: `03:00-05:00` (hora Espana), aplicada mediante overrides de `apt-daily*.timer`
+  - ventana de parches: `<ventana-nocturna>`, aplicada mediante overrides de `apt-daily*.timer`
   - `PasswordAuthentication no` aplicado y validado
   - `PermitRootLogin no` validado en comprobación efectiva y acceso real
+  - puerto SSH operativo: `<SSH_PORT>/tcp`; `22/tcp` cerrado en UFW
+  - incidencia conocida resuelta: reinicio manual de fail2ban puede requerir limpiar `/var/run/fail2ban/fail2ban.sock`
 
 ## Convenciones de base de datos
 

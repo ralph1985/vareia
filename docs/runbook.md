@@ -3,7 +3,7 @@
 ## Acceso
 
 - Proveedor: Cubepath
-- Hostname: VareIA-vps-prod (provisional)
+- Hostname: <hostname-interno> (provisional)
 - IP pública: omitida (repositorio público)
 - Usuario admin: omitido (repositorio público)
 - Método de acceso actual: SSH por clave pública (usuario no-root) desde equipo local
@@ -13,7 +13,7 @@
 
 - SSH operativo desde equipo local con usuario no-root y clave pública.
 - Consola web del proveedor mantenida solo como acceso de contingencia.
-- Solo puerto 22 abierto por ahora.
+- Puerto SSH actual: `<SSH_PORT>/tcp` (IPv4/IPv6); `22/tcp` cerrado en firewall.
 - UFW activo con política `deny incoming` y `allow outgoing`.
 - Fail2ban activo para `sshd` (`bantime=1h`, `maxretry=5`).
 
@@ -56,7 +56,7 @@ journalctl -p err -n 100
 - `postgres-shared`: `POSTGRES_DB=postgres` para bootstrap; BDs de apps separadas.
 - `postgres-shared`: configuracion por defecto en fase inicial.
 - `postgres-shared`: limites iniciales `0.5 CPU` y `512MB RAM`.
-- Backups PostgreSQL: script en host + cron diario `04:00` (hora Espana).
+- Backups PostgreSQL: script en host + cron diario `<hora-backup-f1>`.
 - Backups PostgreSQL: ruta `/opt/infra/backups/postgres`, formato `YYYYMMDD-HHMM-app_<project>.sql.gz`.
 - Backups PostgreSQL: rotacion >30 dias en el mismo cron + verificacion de fichero no vacio.
 - Backups por fases:
@@ -65,9 +65,9 @@ journalctl -p err -n 100
   - Fase 3: configuracion de `/opt/infra` (sin secretos)
 - Backups por fases: frecuencia diaria y retencion de 30 dias en todas las fases.
 - Backups por fases: horario escalonado (hora Espana):
-  - Fase 1: `04:00`
-  - Fase 2: `04:30`
-  - Fase 3: `05:00`
+  - Fase 1: `<hora-backup-f1>`
+  - Fase 2: `<hora-backup-f2>`
+  - Fase 3: `<hora-backup-f3>`
 - Backups fases 2 y 3: compresion `.tar.gz`.
 - Backups todas las fases: generar checksum `sha256`.
 - Restore: recordatorio pendiente de primera prueba completa (sin periodicidad fija).
@@ -99,18 +99,19 @@ journalctl -p err -n 100
   - severidad `warning` (aviso unico) y `critical` (repeticion cada 15 min)
   - cada alerta con enlace a runbook
   - registro histórico: solo eventos `critical` en `monitoring/monitoring-log.md`
-  - canal objetivo: `#VareIA-alerts`
+  - canal objetivo: `<canal-alertas>`
   - formato de alerta con prefijo (`[WARNING]` / `[CRITICAL]`)
   - payload minimo: servicio, evento, impacto, timestamp, accion sugerida, enlace runbook
   - `critical` abre hilo de seguimiento hasta cierre
   - sin `@channel` por ahora
-  - resumen diario automatizado a las `09:00` (hora Espana)
+  - resumen diario automatizado a las `<hora-resumen-diario>`
 - Seguridad operativa:
   - `fail2ban` inicial solo para `sshd`
   - valores iniciales `bantime=1h` y `maxretry=5`
   - `ignoreip` pendiente de definir con rangos de confianza
+  - SSH publicado en puerto personalizado `<SSH_PORT>/tcp` (override en `ssh.socket`)
   - `unattended-upgrades` solo seguridad, sin upgrades generales
-  - ventana de parches automáticos `03:00-05:00` (hora Espana) aplicada mediante overrides de `apt-daily*.timer`
+  - ventana de parches automáticos `<ventana-nocturna>` aplicada mediante overrides de `apt-daily*.timer`
 - `reverse-proxy`: contenedor `reverse-proxy-nginx`.
 - `reverse-proxy`: imagen fija `nginx:1.28-alpine`.
 - `reverse-proxy`: conectado a `proxy-net` y `infra-net`.
@@ -175,7 +176,20 @@ journalctl -p err -n 100
   - `PasswordAuthentication no`
   - `AuthenticationMethods publickey`
   - `PermitRootLogin no`
+  - `Port <SSH_PORT>` efectivo
   - acceso real confirmado en nueva sesión SSH por clave pública
+
+## Resolución conocida: Fail2ban no arranca tras reinicio manual
+
+- Sintoma: `Could not start server... old socket file is still present`.
+- Causa: socket huérfano en `/var/run/fail2ban/fail2ban.sock`.
+- Resolucion:
+
+```bash
+sudo rm -f /var/run/fail2ban/fail2ban.sock
+sudo systemctl restart fail2ban
+sudo fail2ban-client status sshd
+```
 
 ## Política de secretos
 

@@ -4,10 +4,14 @@ Formato de fecha: `YYYY-MM-DD`.
 
 ## 2026-03-21
 
+- SSH movido de `22/tcp` a puerto personalizado `<SSH_PORT>/tcp` con override de `ssh.socket` (IPv4/IPv6).
+- Validado acceso real en nueva sesion por `ssh -p <SSH_PORT>`.
+- Cerrado `22/tcp` en UFW; regla de entrada SSH mantenida solo en `<SSH_PORT>/tcp`.
+- Incidencia operativa resuelta en fail2ban tras reinicio manual: eliminado socket huérfano `/var/run/fail2ban/fail2ban.sock` y servicio recuperado.
 - Cerrada ambigüedad de SSH en includes: `/etc/ssh/sshd_config.d/50-cloud-init.conf` sin directivas activas de autenticación.
 - Validación efectiva SSH completada: `PasswordAuthentication no`, `AuthenticationMethods publickey`, `PermitRootLogin no`.
 - Validado acceso real por clave pública en nueva sesión SSH tras reinicio de servicio.
-- Ajustada ventana de parches automáticos a `03:00-05:00` (UTC del host) mediante overrides de `apt-daily.timer` y `apt-daily-upgrade.timer`.
+- Ajustada ventana de parches automáticos a `<ventana-nocturna>` mediante overrides de `apt-daily.timer` y `apt-daily-upgrade.timer`.
 - Alineada documentación de inventario/runbook/checklists con estado real de hardening y acceso SSH.
 - Añadido script `scripts/stacks/reverse-proxy.sh` para despliegue idempotente de `reverse-proxy-nginx`.
 - Actualizado `run-all.sh` para incluir despliegue de `reverse-proxy` junto a PostgreSQL y n8n.
@@ -22,10 +26,10 @@ Formato de fecha: `YYYY-MM-DD`.
 - Alta del proyecto VareIA para seguimiento del VPS.
 - Completado Paso 1 (Docker): Docker Engine y plugin `docker compose` instalados desde repositorio oficial.
 - Validacion Docker completada con `docker --version`, `docker compose version` y `docker run --rm hello-world`.
-- Usuario operativo `monis` añadido al grupo `docker` y cambio validado en nueva sesion SSH.
+- Usuario operativo `<usuario-admin>` añadido al grupo `docker` y cambio validado en nueva sesion SSH.
 - Completado Paso 2 (Tailscale): `tailscale` 1.96.2 instalado y nodo autenticado en tailnet.
 - Validacion Tailscale completada: `tailscale status`, IPs `100.x`/`fd7a::`, `tailscaled` en estado `enabled` y `active`.
-- Verificada conectividad privada por Tailscale sirviendo HTTP de prueba en `100.91.154.73:8080`.
+- Verificada conectividad privada por Tailscale sirviendo HTTP de prueba en `<tailscale-ip>:8080`.
 - Completado Paso 3 (Redes Docker): creadas redes `infra-net` y `proxy-net`.
 - Validacion de redes Docker completada con `docker network ls`.
 - Completado despliegue inicial de PostgreSQL compartido (`postgres-shared`, `postgres:17`) en `/opt/infra/postgres`.
@@ -59,7 +63,7 @@ Formato de fecha: `YYYY-MM-DD`.
 - Confirmado orden de ejecucion final: Docker/Compose -> Tailscale -> redes Docker -> PostgreSQL -> n8n.
 - Definidos parametros de PostgreSQL: `5432` interno, solo `infra-net`, `POSTGRES_DB=postgres` de bootstrap y configuracion inicial por defecto.
 - Definidos limites iniciales de recursos: PostgreSQL `0.5 CPU` + `512MB RAM`; n8n `0.5 CPU` + `512MB RAM`.
-- Definida estrategia tecnica de backups PostgreSQL: script en host + cron diario `04:00`, ruta `/opt/infra/backups/postgres`, formato `YYYYMMDD-HHMM-app_<project>.sql.gz`, rotacion >30 dias y validacion de fichero no vacio.
+- Definida estrategia tecnica de backups PostgreSQL: script en host + cron diario `<hora-backup-f1>`, ruta `/opt/infra/backups/postgres`, formato `YYYYMMDD-HHMM-app_<project>.sql.gz`, rotacion >30 dias y validacion de fichero no vacio.
 - Definidos parametros de n8n: contenedor `automation-n8n`, puerto interno `5678`, dependencia de healthcheck de PostgreSQL, `EXECUTIONS_MODE=regular` y limpieza de ejecuciones a 14 dias.
 - Definido bloque documental de `reverse-proxy`: contenedor `reverse-proxy-nginx`, imagen `nginx:1.28-alpine`, redes `proxy-net` + `infra-net`.
 - Definida estructura de configuracion Nginx: `nginx.conf` + `conf.d/*.conf` por servicio + `default-deny.conf`.
@@ -82,18 +86,18 @@ Formato de fecha: `YYYY-MM-DD`.
 - Definidas severidades: `warning` (aviso unico) y `critical` (repeticion cada 15 min hasta resolver).
 - Definido que cada alerta incluya enlace a runbook y que `monitoring-log.md` registre solo eventos `critical`.
 - Definido bloque de seguridad operativa: `fail2ban` inicial solo `sshd`, `bantime=1h`, `maxretry=5`, `ignoreip` pendiente.
-- Definido `unattended-upgrades` solo seguridad con ventana nocturna `03:00-05:00` (hora Espana).
+- Definido `unattended-upgrades` solo seguridad con ventana nocturna `<ventana-nocturna>`.
 - Condicionado cierre de `PasswordAuthentication` a SSH estable por Tailscale + clave.
 - Añadido control de verificacion real de `PermitRootLogin no` antes de cerrar SSH por contraseña.
 - Definida estrategia de backup/restore en 3 fases: PostgreSQL, volumenes de apps (`n8n-data`, `openclaw-data`) y configuracion de `/opt/infra` sin secretos.
 - Definida frecuencia diaria y retencion de 30 dias para las tres fases.
-- Definido horario escalonado (hora Espana): `04:00` (F1), `04:30` (F2), `05:00` (F3).
+- Definido horario escalonado (hora Espana): `<hora-backup-f1>` (F1), `<hora-backup-f2>` (F2), `<hora-backup-f3>` (F3).
 - Definida compresion `.tar.gz` para fases 2 y 3.
 - Definido checksum `sha256` para backups en todas las fases.
 - Añadido recordatorio de primera prueba completa de restore sin periodicidad fija.
-- Definido bloque operativo Slack/n8n: canal dedicado `#VareIA-alerts`.
+- Definido bloque operativo Slack/n8n: canal dedicado `<canal-alertas>`.
 - Definido formato de alertas con prefijo de severidad (`[WARNING]` / `[CRITICAL]`) y campos minimos.
 - Definido seguimiento de `critical` en hilo hasta cierre y sin `@channel` por ahora.
-- Definido resumen diario de estado/alertas en Slack a las `09:00` (hora Espana).
+- Definido resumen diario de estado/alertas en Slack a las `<hora-resumen-diario>`.
 - Definida rotacion de logs de Nginx: diaria, retencion 14 dias, compresion `.gz`, limite 50MB por archivo.
 - Confirmado `ignoreip` de fail2ban en estado pendiente hasta disponer de rangos reales.

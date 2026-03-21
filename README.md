@@ -23,7 +23,7 @@ Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, moni
 - Plan: `gp.nano`.
 - VPS: `Ubuntu 24 LTS` con `1 CPU`, `2 GB RAM`, `40 GB` disco.
 - Coste: `~5 EUR/mes`.
-- Red actual: `UFW` activo con `OpenSSH`; solo puerto `22` abierto.
+- Red actual: `UFW` activo; solo puerto SSH personalizado `<SSH_PORT>/tcp` abierto (`22/tcp` cerrado).
 - Acceso actual: SSH operativo desde equipo local con usuario no-root y clave pública.
 - Acceso de contingencia: consola web del proveedor.
 
@@ -46,11 +46,12 @@ Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, moni
 - `apps`: reservado para futuros servicios, con estructura por app `/opt/infra/apps/<app-slug>/`.
 - `apps`: cada app con `README`, `compose.yml`, `.env`, `.env.example`, DB dedicada y red por defecto `infra-net`.
 - `apps`: defaults por app `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM`.
-- Seguridad operativa: `fail2ban` (`sshd`, `bantime=1h`, `maxretry=5`) y `unattended-upgrades` solo seguridad (ventana `03:00-05:00` aplicada en timers `apt`).
-- Backups/restore en 3 fases (PostgreSQL, volumenes, configuracion), diarios, retencion 30 dias, horario escalonado `04:00/04:30/05:00`.
+- Seguridad operativa: `fail2ban` (`sshd`, `bantime=1h`, `maxretry=5`) y `unattended-upgrades` solo seguridad (ventana `<ventana-nocturna>` aplicada en timers `apt`).
+- Endurecimiento SSH adicional aplicado: `ssh.socket` en `<SSH_PORT>/tcp` (IPv4/IPv6) con acceso validado en nueva sesion.
+- Backups/restore en 3 fases (PostgreSQL, volumenes, configuracion), diarios, retencion 30 dias, horario escalonado `<hora-backup-f1>/<hora-backup-f2>/<hora-backup-f3>`.
 - Backups fases 2 y 3 en `.tar.gz` + checksum `sha256` en todas las fases.
-- Slack operativo: canal `#VareIA-alerts`, severidades `[WARNING]/[CRITICAL]`, `critical` en hilo hasta cierre.
-- Slack operativo: resumen diario a las `09:00` (hora Espana), sin `@channel` por ahora.
+- Slack operativo: canal `<canal-alertas>`, severidades `[WARNING]/[CRITICAL]`, `critical` en hilo hasta cierre.
+- Slack operativo: resumen diario a las `<hora-resumen-diario>`, sin `@channel` por ahora.
 - SSH endurecido y validado: acceso operativo por clave pública, `PasswordAuthentication no` y `PermitRootLogin no`.
 - Se usará Tailscale como pieza prioritaria de red tras Docker.
 - Exposición pública futura solo para `reverse-proxy` (80/443) cuando exista dominio.
