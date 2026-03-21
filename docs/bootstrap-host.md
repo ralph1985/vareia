@@ -11,7 +11,7 @@ Script para preparar un VPS Ubuntu 24.04 con baseline operativo de VareIA.
 - Paquetes base operativos.
 - UFW (`deny incoming`, `allow outgoing`, `allow OpenSSH`).
 - Fail2ban para `sshd` (`bantime=1h`, `findtime=10m`, `maxretry=5`).
-- `unattended-upgrades` solo seguridad con ventana `03:00-05:00` (Europe/Madrid).
+- `unattended-upgrades` solo seguridad con ventana `<ventana-nocturna>` (<timezone-local>).
 - Docker Engine + plugin `docker compose` desde repo oficial.
 - Usuario operativo al grupo `docker`.
 - Estructura base en `/opt/infra`.
@@ -22,13 +22,13 @@ Script para preparar un VPS Ubuntu 24.04 con baseline operativo de VareIA.
 
 ```bash
 cd /ruta/al/repo/VareIA
-sudo ./scripts/bootstrap-host.sh --user monis
+sudo ./scripts/bootstrap-host.sh --user <usuario-admin>
 ```
 
 Con Tailscale:
 
 ```bash
-sudo ./scripts/bootstrap-host.sh --user monis --with-tailscale
+sudo ./scripts/bootstrap-host.sh --user <usuario-admin> --with-tailscale
 ```
 
 ## Post-ejecución

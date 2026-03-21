@@ -7,7 +7,7 @@ Este proyecto ya permite automatizar despliegue base + stacks iniciales con scri
 1. Host base (una vez por VPS):
 
 ```bash
-sudo ./scripts/bootstrap-host.sh --user monis --with-tailscale
+sudo ./scripts/bootstrap-host.sh --user <usuario-admin> --with-tailscale
 ```
 
 2. Preparar variables del servidor:
