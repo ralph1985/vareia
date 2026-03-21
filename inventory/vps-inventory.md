@@ -18,12 +18,13 @@
 - Subdominios: ninguno
 - Firewall activo: sí (`ufw allow OpenSSH` + `ufw enable`)
 - Puertos abiertos: solo 22
-- SSH por contraseña deshabilitado: no
-- SSH root (`PermitRootLogin no`): configurado, pendiente de verificación
+- SSH por contraseña deshabilitado (usuario operativo): efectivo por política de autenticación por clave pública
+- SSH root (`PermitRootLogin no`): configurado y validado en comprobación de configuración efectiva
 - IP pública: omitida (repositorio público)
 - Usuario admin no-root: omitido (repositorio público)
-- Método de acceso actual: consola web del proveedor (SSH no operativo por limitación IPv6 en equipo local)
-- Objetivo SSH futuro: solo clave pública (recordatorio pendiente)
+- Método de acceso actual: SSH por clave pública con usuario no-root (equipo local)
+- Acceso de contingencia: consola web del proveedor
+- Objetivo SSH futuro: consolidar configuración SSH para eliminar directivas ambiguas en includes
 
 ## Servicios
 
@@ -122,7 +123,7 @@
   - parametros iniciales: `bantime=1h`, `maxretry=5`
   - `ignoreip` pendiente con rangos de confianza (sin definir aun)
   - `unattended-upgrades` solo seguridad
-  - ventana de parches: `03:00-05:00` (hora Espana)
+  - ventana de parches objetivo: `03:00-05:00` (hora Espana), pendiente de ajuste (timers `apt` en valores por defecto)
   - cierre de `PasswordAuthentication` condicionado a SSH estable por Tailscale + clave
   - verificacion real de `PermitRootLogin no` pendiente antes del cierre por contraseña
 

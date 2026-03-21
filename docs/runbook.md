@@ -6,13 +6,16 @@
 - Hostname: vareia-vps-prod (provisional)
 - IP pública: omitida (repositorio público)
 - Usuario admin: omitido (repositorio público)
-- Método de acceso actual: consola web del proveedor
+- Método de acceso actual: SSH por clave pública (usuario no-root) desde equipo local
+- Acceso de contingencia: consola web del proveedor
 
 ## Estado actual y limitaciones
 
-- VPS accesible por consola web del proveedor.
-- SSH todavía no operativo desde equipo local por limitación de conectividad IPv6.
+- SSH operativo desde equipo local con usuario no-root y clave pública.
+- Consola web del proveedor mantenida solo como acceso de contingencia.
 - Solo puerto 22 abierto por ahora.
+- UFW activo con política `deny incoming` y `allow outgoing`.
+- Fail2ban activo para `sshd` (`bantime=1h`, `maxretry=5`).
 
 ## Comandos clave
 
@@ -107,7 +110,7 @@ journalctl -p err -n 100
   - valores iniciales `bantime=1h` y `maxretry=5`
   - `ignoreip` pendiente de definir con rangos de confianza
   - `unattended-upgrades` solo seguridad, sin upgrades generales
-  - ventana de parches automáticos `03:00-05:00` (hora Espana)
+  - ventana de parches automáticos `03:00-05:00` (hora Espana) pendiente de ajuste; actualmente timers por defecto de `apt`
 - `reverse-proxy`: contenedor `reverse-proxy-nginx`.
 - `reverse-proxy`: imagen fija `nginx:1.28-alpine`.
 - `reverse-proxy`: conectado a `proxy-net` y `infra-net`.
@@ -165,7 +168,7 @@ journalctl -p err -n 100
 
 ## Recordatorios
 
-- Mantener `PasswordAuthentication` temporalmente y deshabilitarlo cuando exista SSH estable por Tailscale + clave.
+- Revisar y simplificar configuración SSH para dejar `PasswordAuthentication no` sin ambigüedad en includes.
 - Verificar `PermitRootLogin no` con prueba real antes de cerrar SSH por contraseña.
 
 ## Política de secretos

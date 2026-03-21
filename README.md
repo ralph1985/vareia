@@ -23,7 +23,8 @@ Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, moni
 - VPS: `Ubuntu 24 LTS` con `1 CPU`, `2 GB RAM`, `40 GB` disco.
 - Coste: `~5 EUR/mes`.
 - Red actual: `UFW` activo con `OpenSSH`; solo puerto `22` abierto.
-- Limitación actual: acceso por consola web del proveedor (problema de acceso SSH desde equipo local por IPv6).
+- Acceso actual: SSH operativo desde equipo local con usuario no-root y clave pública.
+- Acceso de contingencia: consola web del proveedor.
 
 ## Arquitectura objetivo (stacks)
 
@@ -44,7 +45,7 @@ Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, moni
 - `apps`: reservado para futuros servicios, con estructura por app `/opt/infra/apps/<app-slug>/`.
 - `apps`: cada app con `README`, `compose.yml`, `.env`, `.env.example`, DB dedicada y red por defecto `infra-net`.
 - `apps`: defaults por app `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM`.
-- Seguridad operativa: `fail2ban` (`sshd`, `bantime=1h`, `maxretry=5`) y `unattended-upgrades` solo seguridad (`03:00-05:00`).
+- Seguridad operativa: `fail2ban` (`sshd`, `bantime=1h`, `maxretry=5`) y `unattended-upgrades` solo seguridad (ventana `03:00-05:00` pendiente de ajuste).
 - Backups/restore en 3 fases (PostgreSQL, volumenes, configuracion), diarios, retencion 30 dias, horario escalonado `04:00/04:30/05:00`.
 - Backups fases 2 y 3 en `.tar.gz` + checksum `sha256` en todas las fases.
 - Slack operativo: canal `#vareia-alerts`, severidades `[WARNING]/[CRITICAL]`, `critical` en hilo hasta cierre.

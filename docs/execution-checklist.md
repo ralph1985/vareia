@@ -149,12 +149,12 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Criterios de seguridad minimos
 
-- [ ] Instalar `fail2ban` (inicialmente solo `sshd`).
-- [ ] Configurar `fail2ban`: `bantime=1h`, `maxretry=5`.
+- [x] Instalar `fail2ban` (inicialmente solo `sshd`).
+- [x] Configurar `fail2ban`: `bantime=1h`, `maxretry=5`.
 - [ ] Mantener `ignoreip` en pendiente hasta disponer de rangos reales.
-- [ ] Activar `unattended-upgrades` (solo seguridad).
+- [x] Activar `unattended-upgrades` (solo seguridad).
 - [ ] Definir ventana de parches `03:00-05:00` (hora Espana).
-- [ ] Recordatorio pendiente: deshabilitar SSH por password cuando haya SSH estable por Tailscale + clave.
+- [x] Recordatorio pendiente: deshabilitar SSH por password cuando haya SSH estable por Tailscale + clave.
 - [ ] Verificar `PermitRootLogin no` con prueba real antes de cerrar SSH por contraseña.
 
 ## Registro de cierre
