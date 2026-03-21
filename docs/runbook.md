@@ -115,17 +115,20 @@ journalctl -p err -n 100
 - `reverse-proxy`: imagen fija `nginx:1.28-alpine`.
 - `reverse-proxy`: conectado a `proxy-net` y `infra-net`.
 - `reverse-proxy`: `80/443` cerrados por ahora; abrir solo con dominio y DNS operativos.
+- `reverse-proxy`: publicado solo en loopback del host (`127.0.0.1:8080`) para integración privada.
 - `reverse-proxy`: estructura de configuracion
   - `/opt/infra/reverse-proxy/nginx.conf`
   - `/opt/infra/reverse-proxy/conf.d/*.conf`
 - `reverse-proxy`: incluir `default-deny.conf` desde inicio.
 - `reverse-proxy`: plantilla de vhost privada para `n8n` activa.
+- `reverse-proxy`: endpoint de salud disponible en `/nginx-health` dentro del vhost de `n8n`.
 - `reverse-proxy`: logs en `/opt/infra/reverse-proxy/logs`; rotacion pendiente.
 - `reverse-proxy`: rotacion de logs definida:
   - diaria
   - retencion 14 dias
   - compresion `.gz`
   - limite 50MB por archivo
+- `reverse-proxy`: acceso web privado permanente vía Tailscale Serve (`https://<node>.ts.net/` -> `http://127.0.0.1:8080`).
 
 ## Plantilla documental de `/opt/infra` (sin ejecutar aún)
 

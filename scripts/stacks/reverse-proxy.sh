@@ -40,6 +40,8 @@ require_env NGINX_CPUS
 require_env N8N_HOST
 require_env N8N_PORT
 
+NGINX_SERVER_NAMES="${NGINX_SERVER_NAMES:-${N8N_HOST}}"
+
 require_cmd docker
 require_docker_access
 
@@ -56,6 +58,7 @@ NGINX_MEM_LIMIT=${NGINX_MEM_LIMIT}
 NGINX_CPUS=${NGINX_CPUS}
 N8N_HOST=${N8N_HOST}
 N8N_PORT=${N8N_PORT}
+NGINX_SERVER_NAMES=${NGINX_SERVER_NAMES}
 EOF
 
 cat > "${STACK_DIR}/.env.example" <<'EOF'
@@ -64,6 +67,7 @@ NGINX_MEM_LIMIT=256m
 NGINX_CPUS=0.25
 N8N_HOST=n8n.local
 N8N_PORT=5678
+NGINX_SERVER_NAMES=n8n.local
 EOF
 
 cat > "${STACK_DIR}/nginx.conf" <<'EOF'
@@ -114,10 +118,15 @@ EOF
 cat > "${STACK_DIR}/conf.d/n8n-private.conf" <<'EOF'
 server {
   listen 8080;
-  server_name n8n.local;
+  server_name __SERVER_NAMES__;
+
+  location = /nginx-health {
+    add_header Content-Type text/plain;
+    return 200 'ok';
+  }
 
   location / {
-    proxy_pass http://automation-n8n:5678;
+    proxy_pass http://automation-n8n:__N8N_PORT__;
     proxy_http_version 1.1;
 
     proxy_set_header Host $host;
@@ -128,6 +137,11 @@ server {
   }
 }
 EOF
+
+sed -i \
+  -e "s/__SERVER_NAMES__/${NGINX_SERVER_NAMES}/" \
+  -e "s/__N8N_PORT__/${N8N_PORT}/" \
+  "${STACK_DIR}/conf.d/n8n-private.conf"
 
 cat > "${STACK_DIR}/compose.yml" <<'EOF'
 services:
@@ -141,6 +155,8 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./conf.d:/etc/nginx/conf.d:ro
       - ./logs:/var/log/nginx
+    ports:
+      - "127.0.0.1:8080:8080"
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/nginx-health >/dev/null 2>&1 || exit 1"]
       interval: 15s
@@ -168,4 +184,3 @@ log "Rendering stack files in ${STACK_DIR}"
 
 wait_health "reverse-proxy-nginx" 90 2
 log "Reverse proxy stack deployed."
-

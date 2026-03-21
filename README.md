@@ -5,6 +5,7 @@ Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, moni
 ## Estructura
 
 - `docs/`: documentación general y runbook operativo.
+- `docs/architecture.md`: diagrama Mermaid de arquitectura actual y flujo privado por Tailscale.
 - `docs/execution-checklist.md`: checklist ejecutable del despliegue por fases.
 - `docs/bootstrap-host.md`: guía del bootstrap reproducible de host base.
 - `docs/automation.md`: guía de automatización de stacks y despliegue multi-servidor.

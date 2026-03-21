@@ -30,6 +30,18 @@ vi configs/servers/vareia-prod.env
 - `scripts/stacks/reverse-proxy.sh`: crea stack reverse proxy privado (`reverse-proxy-nginx`) para enrutar a servicios internos.
 - `scripts/run-all.sh`: orquesta redes Docker + PostgreSQL + n8n + reverse-proxy.
 
+## Acceso web privado por Tailscale (permanente)
+
+Una vez desplegado `reverse-proxy`, exponer solo dentro del tailnet:
+
+```bash
+sudo tailscale serve --bg --https=443 --set-path / http://127.0.0.1:8080
+```
+
+Notas:
+- Mantener `80/443` cerrados en UFW mientras no haya dominio público.
+- Añadir el FQDN `*.ts.net` del nodo dentro de `NGINX_SERVER_NAMES` para que Nginx acepte ese host.
+
 ## Re-ejecución segura
 
 - Los scripts se pueden ejecutar más de una vez.

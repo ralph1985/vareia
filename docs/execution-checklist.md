@@ -83,6 +83,8 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Incluir `default-deny.conf`.
 - [x] Incluir plantilla de vhost privado para `n8n`.
 - [x] Definir logs en `/opt/infra/reverse-proxy/logs`.
+- [x] Publicar Nginx solo en loopback del host (`127.0.0.1:8080`) para integración privada.
+- [x] Exponer acceso HTTPS privado vía `tailscale serve` al FQDN `*.ts.net` del nodo.
 - [ ] Configurar rotacion de logs Nginx: diaria, 14 dias, compresion `.gz`, limite 50MB.
 - [x] Mantener puertos `80/443` cerrados hasta dominio y DNS operativos.
 - [x] Posponer TLS/Let's Encrypt hasta dominio y DNS operativos.

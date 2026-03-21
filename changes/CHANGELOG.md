@@ -13,6 +13,9 @@ Formato de fecha: `YYYY-MM-DD`.
 - Actualizado `run-all.sh` para incluir despliegue de `reverse-proxy` junto a PostgreSQL y n8n.
 - Desplegado `reverse-proxy-nginx` en `proxy-net` + `infra-net` y validado estado `healthy`.
 - Validada ruta privada a n8n via reverse-proxy (`Host: n8n.local` -> `/healthz` devuelve `{"status":"ok"}`).
+- Ajustado reverse-proxy para publicar solo en loopback del host (`127.0.0.1:8080`) y mantener `80/443` públicos cerrados.
+- Habilitado acceso HTTPS permanente por Tailscale Serve (`https://<node>.ts.net/` -> `http://127.0.0.1:8080`).
+- Añadido endpoint `/nginx-health` en vhost principal de n8n para validación directa desde dominio Tailscale.
 
 ## 2026-03-20
 
