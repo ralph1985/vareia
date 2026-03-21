@@ -123,7 +123,7 @@
   - parametros iniciales: `bantime=1h`, `maxretry=5`
   - `ignoreip` pendiente con rangos de confianza (sin definir aun)
   - `unattended-upgrades` solo seguridad
-  - ventana de parches objetivo: `03:00-05:00` (hora Espana), pendiente de ajuste (timers `apt` en valores por defecto)
+  - ventana de parches: `03:00-05:00` (hora Espana), aplicada mediante overrides de `apt-daily*.timer`
   - cierre de `PasswordAuthentication` condicionado a SSH estable por Tailscale + clave
   - verificacion real de `PermitRootLogin no` pendiente antes del cierre por contraseña
 

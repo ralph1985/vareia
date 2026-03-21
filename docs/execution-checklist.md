@@ -153,7 +153,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Configurar `fail2ban`: `bantime=1h`, `maxretry=5`.
 - [ ] Mantener `ignoreip` en pendiente hasta disponer de rangos reales.
 - [x] Activar `unattended-upgrades` (solo seguridad).
-- [ ] Definir ventana de parches `03:00-05:00` (hora Espana).
+- [x] Definir ventana de parches `03:00-05:00` (hora Espana).
 - [x] Recordatorio pendiente: deshabilitar SSH por password cuando haya SSH estable por Tailscale + clave.
 - [ ] Verificar `PermitRootLogin no` con prueba real antes de cerrar SSH por contraseña.
 

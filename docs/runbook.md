@@ -110,7 +110,7 @@ journalctl -p err -n 100
   - valores iniciales `bantime=1h` y `maxretry=5`
   - `ignoreip` pendiente de definir con rangos de confianza
   - `unattended-upgrades` solo seguridad, sin upgrades generales
-  - ventana de parches automáticos `03:00-05:00` (hora Espana) pendiente de ajuste; actualmente timers por defecto de `apt`
+  - ventana de parches automáticos `03:00-05:00` (hora Espana) aplicada mediante overrides de `apt-daily*.timer`
 - `reverse-proxy`: contenedor `reverse-proxy-nginx`.
 - `reverse-proxy`: imagen fija `nginx:1.28-alpine`.
 - `reverse-proxy`: conectado a `proxy-net` y `infra-net`.

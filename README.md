@@ -45,7 +45,7 @@ Seguimiento operativo del VPS: inventario, hardening, cambios, incidencias, moni
 - `apps`: reservado para futuros servicios, con estructura por app `/opt/infra/apps/<app-slug>/`.
 - `apps`: cada app con `README`, `compose.yml`, `.env`, `.env.example`, DB dedicada y red por defecto `infra-net`.
 - `apps`: defaults por app `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM`.
-- Seguridad operativa: `fail2ban` (`sshd`, `bantime=1h`, `maxretry=5`) y `unattended-upgrades` solo seguridad (ventana `03:00-05:00` pendiente de ajuste).
+- Seguridad operativa: `fail2ban` (`sshd`, `bantime=1h`, `maxretry=5`) y `unattended-upgrades` solo seguridad (ventana `03:00-05:00` aplicada en timers `apt`).
 - Backups/restore en 3 fases (PostgreSQL, volumenes, configuracion), diarios, retencion 30 dias, horario escalonado `04:00/04:30/05:00`.
 - Backups fases 2 y 3 en `.tar.gz` + checksum `sha256` en todas las fases.
 - Slack operativo: canal `#vareia-alerts`, severidades `[WARNING]/[CRITICAL]`, `critical` en hilo hasta cierre.

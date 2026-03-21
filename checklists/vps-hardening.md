@@ -9,7 +9,7 @@
 - [x] Fail2ban con `bantime=1h` y `maxretry=5`.
 - [ ] Mantener `ignoreip` pendiente hasta disponer de rangos reales.
 - [x] Actualizaciones de seguridad automáticas habilitadas. (decisión: sí, solo seguridad)
-- [ ] Ventana de parches automáticos `03:00-05:00` (hora Espana).
+- [x] Ventana de parches automáticos `03:00-05:00` (hora Espana).
 - [ ] NTP sincronizado.
 - [ ] Swap configurada (si aplica).
 - [ ] Alertas básicas de CPU, RAM, disco y uptime configuradas (vía n8n -> Slack).
