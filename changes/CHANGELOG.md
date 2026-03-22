@@ -6,6 +6,13 @@ Formato de fecha: `YYYY-MM-DD`.
 
 - Actualizado stack `automation-n8n` a versión segura `1.122.x` (tag desplegado `n8nio/n8n:1.122.1`) tras aviso crítico de actualización en panel.
 - Validada actualización en runtime con contenedor `automation-n8n` en estado `healthy` y `healthz` operativo vía dominio Tailscale.
+- Corregida publicación de n8n detrás de reverse-proxy por prefijo: `N8N_PATH=/n8n/`, `N8N_PROTOCOL=https`, `N8N_EDITOR_BASE_URL` y `WEBHOOK_URL` alineadas al FQDN tailnet.
+- Reestructurada configuración Nginx por rutas y servicio para el host tailnet:
+  - `/` estado de gateway
+  - `/n8n/` -> `automation-n8n:5678`
+  - `/pm/` -> `project-manager:4173`
+- Desplegado `project-manager` en Docker (contenedor `project-manager`) y validado acceso privado por Tailscale en `/pm/`.
+- Encapsulado `project-manager` bajo `/pm/` para evitar exposición de rutas globales fuera del prefijo.
 
 ## 2026-03-21
 
