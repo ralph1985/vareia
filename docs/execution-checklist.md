@@ -9,9 +9,9 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 3. [x] Redes Docker (`infra-net`, `proxy-net`)
 4. [x] PostgreSQL compartido (`postgres-shared`, `postgres:17`)
 5. [x] n8n (`automation`, con PostgreSQL)
-6. [ ] Reverse proxy (`reverse-proxy-nginx`)
+6. [x] Reverse proxy (`reverse-proxy-nginx`)
 7. [ ] Orchestrator (`orchestrator-openclaw`)
-8. [ ] Apps (estructura base para futuros servicios)
+8. [x] Apps (estructura base + primer servicio web)
 9. [ ] Monitorizacion y alertas (n8n -> Slack)
 
 ## Paso 1 - Docker
@@ -81,7 +81,7 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Definir `/opt/infra/reverse-proxy/nginx.conf`.
 - [x] Definir `conf.d/*.conf` con un archivo por servicio.
 - [x] Incluir `default-deny.conf`.
-- [x] Incluir plantilla de vhost privado para `n8n`.
+- [x] Incluir vhost privado por rutas (`/n8n/`, `/pm/`) y raíz de estado (`/`).
 - [x] Definir logs en `/opt/infra/reverse-proxy/logs`.
 - [x] Publicar Nginx solo en loopback del host (`127.0.0.1:8080`) para integración privada.
 - [x] Exponer acceso HTTPS privado vía `tailscale serve` al FQDN `*.ts.net` del nodo.
@@ -104,7 +104,8 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 ## Paso 8 - Apps (futuras)
 
-- [ ] Mantener stack `apps` sin servicios iniciales.
+- [x] Desplegar primer servicio web de apps: `project-manager` en `/pm/` (privado por Tailscale).
+- [x] Mantener servicios de `apps` documentados y publicados solo por reverse-proxy.
 - [ ] Crear estructura por app en `/opt/infra/apps/<app-slug>/`.
 - [ ] Exigir plantilla minima por app: `README`, `compose.yml`, `.env`, `.env.example`.
 - [ ] Conectar apps por defecto solo a `infra-net`.

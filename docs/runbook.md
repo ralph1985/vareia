@@ -76,6 +76,7 @@ journalctl -p err -n 100
 - `n8n`: limites iniciales `0.5 CPU` y `512MB RAM`.
 - `n8n`: `EXECUTIONS_MODE=regular`.
 - `n8n`: politica de limpieza activa con retencion inicial de 14 dias.
+- `n8n`: acceso privado por reverse-proxy en `/n8n/` (base path operativo con `N8N_PATH=/n8n/`).
 - `orchestrator`: contenedor `orchestrator-openclaw`.
 - `orchestrator`: solo `infra-net`, sin publicacion de puertos.
 - `orchestrator`: volumen persistente `openclaw-data`.
@@ -125,8 +126,13 @@ journalctl -p err -n 100
   - `/opt/infra/reverse-proxy/nginx.conf`
   - `/opt/infra/reverse-proxy/conf.d/*.conf`
 - `reverse-proxy`: incluir `default-deny.conf` desde inicio.
-- `reverse-proxy`: plantilla de vhost privada para `n8n` activa.
-- `reverse-proxy`: endpoint de salud disponible en `/nginx-health` dentro del vhost de `n8n`.
+- `reverse-proxy`: plantilla de vhost privada por rutas activa.
+- `reverse-proxy`: endpoint de salud disponible en `/nginx-health` dentro del vhost principal tailnet.
+- `reverse-proxy`: enrutado actual privado:
+  - `/` respuesta de estado (`VareIA reverse proxy OK`)
+  - `/n8n/` -> `automation-n8n:5678`
+  - `/pm/` -> `project-manager:4173`
+- `reverse-proxy`: `project-manager` encapsulado en `/pm/` (sin exponer rutas globales `/dashboard` fuera del prefijo).
 - `reverse-proxy`: logs en `/opt/infra/reverse-proxy/logs`; rotacion pendiente.
 - `reverse-proxy`: rotacion de logs definida:
   - diaria

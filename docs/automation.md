@@ -41,6 +41,10 @@ sudo tailscale serve --bg --https=443 --set-path / http://127.0.0.1:8080
 Notas:
 - Mantener `80/443` cerrados en UFW mientras no haya dominio público.
 - Añadir el FQDN `*.ts.net` del nodo dentro de `NGINX_SERVER_NAMES` para que Nginx acepte ese host.
+- Enrutado privado actual recomendado:
+  - `/` estado del reverse proxy
+  - `/n8n/` interfaz de n8n
+  - `/pm/` interfaz de project-manager
 
 ## Re-ejecución segura
 

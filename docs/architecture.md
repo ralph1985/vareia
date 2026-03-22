@@ -20,15 +20,19 @@ flowchart LR
     subgraph Docker["Docker"]
       RP["reverse-proxy-nginx<br/>proxy-net + infra-net"]
       N8N["automation-n8n<br/>infra-net"]
+      PM["project-manager<br/>infra-net"]
       PG["postgres-shared<br/>infra-net"]
     end
   end
 
   PUB -. 80/443 cerrados .-> VPS
-  MOBIL --> TSURL --> TSERVE --> LOOP --> RP --> N8N --> PG
+  MOBIL --> TSURL --> TSERVE --> LOOP --> RP
+  RP -->|/n8n/| N8N --> PG
+  RP -->|/pm/| PM
 ```
 
 Notas:
 - `reverse-proxy-nginx` no publica puertos públicos; solo binding local `127.0.0.1:8080`.
 - El acceso web operativo se realiza por Tailscale Serve (`*.ts.net`).
-- `n8n` y `postgres` permanecen internos en `infra-net`.
+- Enrutado actual: `/` estado, `/n8n/` n8n, `/pm/` project-manager.
+- `n8n`, `project-manager` y `postgres` permanecen internos en `infra-net`.
