@@ -92,6 +92,10 @@ journalctl -p err -n 100
 - `apps`: por defecto solo en `infra-net`; usar `proxy-net` solo con necesidad explicita.
 - `apps`: cada app con DB dedicada (`app_<slug>` / `usr_<slug>`).
 - `apps`: defaults operativos por app: `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM`.
+- `apps`: `project-manager` con auto-despliegue local tras `git pull` mediante hooks de Git.
+- `apps`: hooks definidos en `/home/monis/apps/project-manager/.githooks/` (`post-merge`, `post-rewrite`).
+- `apps`: script de despliegue ejecutado por hooks: `/home/monis/apps/project-manager/scripts/deploy-from-pull.sh`.
+- `apps`: log de despliegue post-pull: `/tmp/project-manager-deploy.log`.
 - Monitorizacion (n8n -> Slack):
   - heartbeat diario operativo (host -> webhook n8n -> Slack)
   - script de host: `/opt/infra/scripts/heartbeat.sh`

@@ -30,6 +30,22 @@ vi configs/servers/VareIA-prod.env
 - `scripts/stacks/reverse-proxy.sh`: crea stack reverse proxy privado (`reverse-proxy-nginx`) para enrutar a servicios internos.
 - `scripts/run-all.sh`: orquesta redes Docker + PostgreSQL + n8n + reverse-proxy.
 
+## Auto-despliegue local de `project-manager` tras `git pull`
+
+Este flujo se implementa en el propio repo `project-manager` y se ejecuta en el VPS.
+
+- Hooks usados: `.githooks/post-merge` y `.githooks/post-rewrite`.
+- Script ejecutado por hooks: `scripts/deploy-from-pull.sh`.
+- Activación en el repo local:
+
+```bash
+cd /home/monis/apps/project-manager
+git config core.hooksPath .githooks
+```
+
+- Acción al hacer `git pull` con cambios: rebuild/restart del servicio `project-manager` usando `docker compose` en `/opt/infra/project-manager`.
+- Log operativo: `/tmp/project-manager-deploy.log`.
+
 ## Acceso web privado por Tailscale (permanente)
 
 Una vez desplegado `reverse-proxy`, exponer solo dentro del tailnet:

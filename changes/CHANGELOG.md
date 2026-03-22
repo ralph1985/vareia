@@ -13,6 +13,7 @@ Formato de fecha: `YYYY-MM-DD`.
   - `/pm/` -> `project-manager:4173`
 - Desplegado `project-manager` en Docker (contenedor `project-manager`) y validado acceso privado por Tailscale en `/pm/`.
 - Encapsulado `project-manager` bajo `/pm/` para evitar exposición de rutas globales fuera del prefijo.
+- Documentado autodespliegue local de `project-manager` tras `git pull` (hooks `post-merge`/`post-rewrite`, `core.hooksPath`, script `deploy-from-pull.sh` y log operativo).
 
 ## 2026-03-21
 

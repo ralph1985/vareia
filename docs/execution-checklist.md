@@ -106,6 +106,10 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 
 - [x] Desplegar primer servicio web de apps: `project-manager` en `/pm/` (privado por Tailscale).
 - [x] Mantener servicios de `apps` documentados y publicados solo por reverse-proxy.
+- [x] Configurar auto-despliegue de `project-manager` tras `git pull` en el VPS.
+- [x] Activar `core.hooksPath=.githooks` en `/home/monis/apps/project-manager`.
+- [x] Definir hooks `post-merge` y `post-rewrite` para ejecutar `scripts/deploy-from-pull.sh`.
+- [x] Validar rebuild/restart automático del contenedor tras pull con cambios.
 - [ ] Crear estructura por app en `/opt/infra/apps/<app-slug>/`.
 - [ ] Exigir plantilla minima por app: `README`, `compose.yml`, `.env`, `.env.example`.
 - [ ] Conectar apps por defecto solo a `infra-net`.
