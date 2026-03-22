@@ -2,6 +2,11 @@
 
 Formato de fecha: `YYYY-MM-DD`.
 
+## 2026-03-22
+
+- Actualizado stack `automation-n8n` a versión segura `1.122.x` (tag desplegado `n8nio/n8n:1.122.1`) tras aviso crítico de actualización en panel.
+- Validada actualización en runtime con contenedor `automation-n8n` en estado `healthy` y `healthz` operativo vía dominio Tailscale.
+
 ## 2026-03-21
 
 - Implementado heartbeat diario de monitorizacion: host -> webhook n8n -> Slack.
