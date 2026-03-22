@@ -17,6 +17,16 @@
 - UFW activo con política `deny incoming` y `allow outgoing`.
 - Fail2ban activo para `sshd` (`bantime=1h`, `maxretry=5`).
 
+## Mapa de directorios (fuente vs runtime)
+
+- `~/apps/`: código fuente versionado (Git) de cada repositorio.
+- `~/apps/vareia`: infraestructura, runbooks, scripts y checklists operativos.
+- `~/apps/project-manager`: aplicación de gestión (monorepo Lerna propio).
+- `~/apps/<app>`: nuevas apps, cada una en su repositorio independiente.
+- `/opt/infra/`: runtime de servidor (stacks Docker, `.env` reales, logs, volúmenes).
+- Regla: no alojar código fuente de apps dentro de `/opt/infra`.
+- Regla: no usar `~/apps/project-manager/projects` para nuevos repositorios de apps en VPS.
+
 ## Comandos clave
 
 ```bash
@@ -92,6 +102,7 @@ journalctl -p err -n 100
 - `apps`: por defecto solo en `infra-net`; usar `proxy-net` solo con necesidad explicita.
 - `apps`: cada app con DB dedicada (`app_<slug>` / `usr_<slug>`).
 - `apps`: defaults operativos por app: `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM`.
+- `apps`: código fuente de cada app en `~/apps/<app>`, fuera de `/opt/infra`.
 - `apps`: `project-manager` con auto-despliegue local tras `git pull` mediante hooks de Git.
 - `apps`: hooks definidos en `/home/monis/apps/project-manager/.githooks/` (`post-merge`, `post-rewrite`).
 - `apps`: script de despliegue ejecutado por hooks: `/home/monis/apps/project-manager/scripts/deploy-from-pull.sh`.
