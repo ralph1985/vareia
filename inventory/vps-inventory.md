@@ -42,23 +42,22 @@
 
 ## Backups
 
-- Estrategia: backup propio hacia OneDrive (sin backups gestionados por proveedor)
-- Frecuencia: diario
-- Retención: 30 días
-- Formato: `pg_dump` comprimido (`.gz`)
-- Ejecucion: script host + cron diario `<hora-backup-f1>`
-- Ruta local: `/opt/infra/backups/postgres`
-- Nombre: `YYYYMMDD-HHMM-app_<project>.sql.gz`
-- Rotación local: eliminar copias de más de 30 días
-- Verificacion: comprobar que el `.gz` generado no esta vacio
-- Cifrado: no (por ahora)
-- Última prueba de restore: no realizada
-- Estrategia por fases:
-  - Fase 1: PostgreSQL (`<hora-backup-f1>`)
-  - Fase 2: volumenes `n8n-data` + `openclaw-data` (`<hora-backup-f2>`, `.tar.gz`)
-  - Fase 3: configuracion `/opt/infra` sin secretos (`<hora-backup-f3>`, `.tar.gz`)
-- Integridad: checksum `sha256` por backup en todas las fases
-- Restore: primera prueba completa pendiente (sin periodicidad fija)
+- Estrategia: backup local + copia externa OneDrive (sin backups gestionados por proveedor)
+- Script operativo: `/opt/infra/scripts/vareia-backup.sh`
+- Programación: `vareia-backup.timer` diario a `03:30 UTC`
+- Retención local: 30 días
+- Cifrado local: no
+- Alertas: Slack en éxito y fallo
+- Cobertura actual:
+  - `home-manager` PostgreSQL (`app_home_manager`) -> `/opt/backups/home-manager/home-manager-<timestamp>.sql.gz`
+  - `n8n` PostgreSQL (`app_n8n`) -> `/opt/backups/n8n/postgres/n8n-postgres-<timestamp>.sql.gz`
+  - volumen `n8n-data` (hot backup) -> `/opt/backups/n8n/data/n8n-data-<timestamp>.tar.gz`
+  - logs de ejecución -> `/opt/backups/logs/backup-<timestamp>.log`
+- Copia externa:
+  - herramienta: `~/apps/onedrive-file-sync/run.sh`
+  - ruta remota base: `backups/VareIA/...` (OneDrive app folder)
+- Restore:
+  - restauración periódica completa pendiente (estado actual: verificado backup + subida)
 
 ## Arquitectura por stacks
 

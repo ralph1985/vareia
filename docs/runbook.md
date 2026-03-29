@@ -66,21 +66,25 @@ journalctl -p err -n 100
 - `postgres-shared`: `POSTGRES_DB=postgres` para bootstrap; BDs de apps separadas.
 - `postgres-shared`: configuracion por defecto en fase inicial.
 - `postgres-shared`: limites iniciales `0.5 CPU` y `512MB RAM`.
-- Backups PostgreSQL: script en host + cron diario `<hora-backup-f1>`.
-- Backups PostgreSQL: ruta `/opt/infra/backups/postgres`, formato `YYYYMMDD-HHMM-app_<project>.sql.gz`.
-- Backups PostgreSQL: rotacion >30 dias en el mismo cron + verificacion de fichero no vacio.
-- Backups por fases:
-  - Fase 1: PostgreSQL
-  - Fase 2: volumenes `n8n-data` y `openclaw-data`
-  - Fase 3: configuracion de `/opt/infra` (sin secretos)
-- Backups por fases: frecuencia diaria y retencion de 30 dias en todas las fases.
-- Backups por fases: horario escalonado (hora Espana):
-  - Fase 1: `<hora-backup-f1>`
-  - Fase 2: `<hora-backup-f2>`
-  - Fase 3: `<hora-backup-f3>`
-- Backups fases 2 y 3: compresion `.tar.gz`.
-- Backups todas las fases: generar checksum `sha256`.
-- Restore: recordatorio pendiente de primera prueba completa (sin periodicidad fija).
+- Backups operativos reales:
+  - script: `/opt/infra/scripts/vareia-backup.sh`
+  - automatizacion: `systemd` (`vareia-backup.service` + `vareia-backup.timer`)
+  - programacion: diario a `03:30 UTC` (`Persistent=true`)
+  - retencion local: 30 dias
+  - cifrado local: no
+- Alcance de backup diario:
+  - PostgreSQL de `home-manager` (`app_home_manager`) en `/opt/backups/home-manager/*.sql.gz`
+  - PostgreSQL de `n8n` (`app_n8n`) en `/opt/backups/n8n/postgres/*.sql.gz`
+  - volumen `n8n-data` en caliente en `/opt/backups/n8n/data/*.tar.gz`
+  - logs del propio backup en `/opt/backups/logs/backup-*.log`
+- Copia externa:
+  - subida automatica a OneDrive mediante `~/apps/onedrive-file-sync/run.sh`
+  - ruta remota base: `backups/VareIA/...` (dentro de `Apps/<onedrive-app-name>/`)
+- Alertas:
+  - Slack en `OK` y `FAIL` desde el propio script de backup
+  - formato operativo con prefijo de estado y lista de ficheros generados/subidos
+- Restore:
+  - restore completo periodico pendiente (solo validado que el backup se genera y sube)
 - `n8n`: contenedor `automation-n8n`, puerto interno `5678`, solo `infra-net`, sin publicacion.
 - `n8n`: depende de `postgres-shared` saludable antes de iniciar.
 - `n8n`: limites iniciales `0.5 CPU` y `512MB RAM`.
@@ -245,6 +249,22 @@ docker logs -f home-manager
 
 # Verificar estado
 docker ps --format 'table {{.Names}}\t{{.Status}}' | rg home-manager
+```
+
+## Operación de backups
+
+```bash
+# Estado del timer diario
+systemctl list-timers --all | rg vareia-backup
+
+# Lanzar backup manual
+sudo systemctl start vareia-backup.service
+
+# Ver logs del backup
+sudo journalctl -u vareia-backup.service -n 120 --no-pager
+
+# Ver ficheros locales generados
+sudo find /opt/backups -maxdepth 4 -type f | sort | tail -n 30
 ```
 
 ## Referencia operativa

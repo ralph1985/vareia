@@ -48,12 +48,11 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Levantar stack con `docker compose --project-name postgres up -d`.
 - [x] Crear credenciales de apps (`app_<project_slug>` / `usr_<project_slug>`).
 - [ ] Dejar logs de consultas lentas como tarea futura (no ahora).
-- [ ] Implementar backup por script de host + cron diario `<hora-backup-f1>`.
-- [ ] Guardar backups en `/opt/infra/backups/postgres`.
-- [ ] Nombre de backup: `YYYYMMDD-HHMM-app_<project>.sql.gz`.
-- [ ] Ejecutar rotacion (>30 dias) tras backup en el mismo cron.
-- [ ] Verificar que cada `.gz` generado no este vacio.
-- [ ] Generar checksum `sha256` por backup de PostgreSQL.
+- [x] Implementar backup por script de host (`/opt/infra/scripts/vareia-backup.sh`) + automatización diaria.
+- [x] Ejecutar backup diario con `systemd timer` (`vareia-backup.timer`, `03:30 UTC`).
+- [x] Guardar backups locales en `/opt/backups` (home-manager, n8n, n8n-data, logs).
+- [x] Ejecutar rotación local (>30 dias) dentro del propio script.
+- [x] Verificar generación real de ficheros de backup (`.sql.gz` / `.tar.gz`).
 
 ## Paso 5 - n8n
 
@@ -142,21 +141,16 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [ ] Mantener sin mencion `@channel` por ahora.
 - [ ] Configurar resumen diario en Slack a las `<hora-resumen-diario>`.
 
-## Paso 10 - Backups y restore (multifase)
+## Paso 10 - Backups y restore (estado real)
 
-- [ ] Mantener estrategia en 3 fases:
-  - [ ] Fase 1: PostgreSQL
-  - [ ] Fase 2: volumenes `n8n-data` y `openclaw-data`
-  - [ ] Fase 3: configuracion de `/opt/infra` (sin secretos)
-- [ ] Frecuencia diaria en fases 1/2/3.
-- [ ] Retencion de 30 dias en fases 1/2/3.
-- [ ] Definir horario escalonado:
-  - [ ] Fase 1 a las `<hora-backup-f1>`
-  - [ ] Fase 2 a las `<hora-backup-f2>`
-  - [ ] Fase 3 a las `<hora-backup-f3>`
-- [ ] Comprimir fases 2 y 3 en `.tar.gz`.
-- [ ] Generar checksum `sha256` por backup en todas las fases.
-- [ ] Mantener recordatorio de primera prueba de restore completa (sin periodicidad fija).
+- [x] Backup diario local con alcance operativo:
+  - [x] PostgreSQL `home-manager`
+  - [x] PostgreSQL `n8n`
+  - [x] Volumen `n8n-data` (hot backup)
+- [x] Retención local de 30 días.
+- [x] Alertas Slack en éxito y fallo del backup.
+- [x] Subida automática a OneDrive (`backups/VareIA/...`) con `onedrive-file-sync`.
+- [ ] Ejecutar y documentar restore completo periódico (pendiente).
 
 ## Criterios de seguridad minimos
 

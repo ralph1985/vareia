@@ -13,6 +13,18 @@ Formato de fecha: `YYYY-MM-DD`.
 - Publicada ruta privada de la app en reverse-proxy bajo prefijo `/hm` y `/hm/`.
 - Alineada configuración de `home-manager` con `basePath=/hm` para servir assets y rutas correctamente detrás de proxy por prefijo.
 - Ajustados headers de proxy (`X-Forwarded-*`) para mantener navegación HTTPS estable a través de Tailscale Serve.
+- Implementada política operativa de backups en producción mediante `systemd`:
+  - `vareia-backup.service` (oneshot)
+  - `vareia-backup.timer` diario a `03:30 UTC` (`Persistent=true`)
+- Implantado backup local con retención de 30 días en `/opt/backups` para:
+  - PostgreSQL de `home-manager` (`app_home_manager`)
+  - PostgreSQL de `n8n` (`app_n8n`)
+  - volumen `n8n-data` en caliente (`.tar.gz`)
+- Añadidas alertas Slack de éxito y fallo para el proceso de backup con formato operativo.
+- Integrada copia externa automática a OneDrive usando `~/apps/onedrive-file-sync` con destino remoto `backups/VareIA/...`.
+- Corregidas incidencias operativas durante el despliegue de backups:
+  - exclusión de query param `?schema=public` para `pg_dump`
+  - resolución de `NODE_BIN` al ejecutar sincronización OneDrive desde contexto `root`.
 
 ## 2026-03-22
 
