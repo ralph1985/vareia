@@ -107,6 +107,10 @@ journalctl -p err -n 100
 - `apps`: hooks definidos en `/home/monis/apps/project-manager/.githooks/` (`post-merge`, `post-rewrite`).
 - `apps`: script de despliegue ejecutado por hooks: `/home/monis/apps/project-manager/scripts/deploy-from-pull.sh`.
 - `apps`: log de despliegue post-pull: `/tmp/project-manager-deploy.log`.
+- `apps`: `home-manager` desplegado como stack runtime dedicado en `/opt/infra/home-manager`.
+- `apps`: `home-manager` opera en modo dev dentro de contenedor (`node:24-bookworm-slim`) con código montado desde `~/apps/home-manager`.
+- `apps`: `home-manager` usa `NEXT_BASE_PATH=/hm` para funcionar detrás del reverse-proxy por prefijo.
+- `apps`: `home-manager` sincroniza esquema de BD al arranque con `npx prisma db push`.
 - Monitorizacion (n8n -> Slack):
   - heartbeat diario operativo (host -> webhook n8n -> Slack)
   - script de host: `/opt/infra/scripts/heartbeat.sh`
@@ -147,6 +151,7 @@ journalctl -p err -n 100
   - `/` respuesta de estado (`VareIA reverse proxy OK`)
   - `/n8n/` -> `automation-n8n:5678`
   - `/pm/` -> `project-manager:4173`
+  - `/hm` y `/hm/` -> `home-manager:3000`
 - `reverse-proxy`: `project-manager` encapsulado en `/pm/` (sin exponer rutas globales `/dashboard` fuera del prefijo).
 - `reverse-proxy`: logs en `/opt/infra/reverse-proxy/logs`; rotacion pendiente.
 - `reverse-proxy`: rotacion de logs definida:
@@ -228,6 +233,19 @@ sudo fail2ban-client status sshd
 3. Reiniciar servicios afectados.
 4. Validar salud y alertas.
 5. Registrar cambio en `changes/CHANGELOG.md`.
+
+## Operación de home-manager
+
+```bash
+# Levantar/actualizar stack runtime de home-manager
+docker compose -f /opt/infra/home-manager/compose.yml --env-file /opt/infra/home-manager/.env up -d
+
+# Ver logs
+docker logs -f home-manager
+
+# Verificar estado
+docker ps --format 'table {{.Names}}\t{{.Status}}' | rg home-manager
+```
 
 ## Referencia operativa
 

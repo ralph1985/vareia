@@ -36,6 +36,7 @@
 | Nginx | privado | instalado | `reverse-proxy-nginx` healthy; `nginx:1.28-alpine`; en `proxy-net` + `infra-net`; publicado en `127.0.0.1:8080`; acceso HTTPS vía Tailscale Serve; rutas activas `/`, `/n8n/`, `/pm/` |
 | n8n | privado | instalado | `automation-n8n` healthy; `5678` interno; `n8n-data`; `n8nio/n8n:1.122.1`; DB `app_n8n`; publicado por proxy en `/n8n/` |
 | project-manager | privado | instalado | `project-manager` healthy; `4173` interno; publicado por proxy en `/pm/` |
+| home-manager | privado | instalado | `home-manager` en contenedor `node:24-bookworm-slim` (modo dev), `3000` interno, volumen de código `~/apps/home-manager:/app`, DB `app_home_manager`; publicado por proxy en `/hm` y `/hm/` |
 | OpenClaw | privado | pendiente | `orchestrator-openclaw`; `openclaw-data`; DB `app_openclaw`; solo Tailscale |
 | PostgreSQL compartido | interno | instalado | `postgres:17`, `postgres-shared` healthy, `5432` interno, `postgres-data`, sin exponer |
 
@@ -103,7 +104,7 @@
 - reverse-proxy:
   - Config en `/opt/infra/reverse-proxy/nginx.conf` y `/opt/infra/reverse-proxy/conf.d/*.conf`
   - `default-deny.conf` habilitado desde inicio
-  - vhost principal tailnet con enrutado por prefijo (`/`, `/n8n/`, `/pm/`)
+  - vhost principal tailnet con enrutado por prefijo (`/`, `/n8n/`, `/pm/`, `/hm`)
   - Logs en `/opt/infra/reverse-proxy/logs` con rotacion diaria, 14 dias, `.gz`, limite 50MB
   - TLS pendiente hasta dominio y DNS operativos
 - Monitorizacion y alertas:

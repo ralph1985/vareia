@@ -2,6 +2,18 @@
 
 Formato de fecha: `YYYY-MM-DD`.
 
+## 2026-03-29
+
+- Añadido nuevo stack runtime de app en `/opt/infra/home-manager` para desplegar `home-manager` desde código fuente en `~/apps/home-manager`.
+- Provisionada base de datos dedicada en PostgreSQL compartido para la app (`app_home_manager` / `usr_home_manager`) siguiendo convención `app_<slug>` / `usr_<slug>`.
+- Definido `home-manager` en modo operativo de desarrollo en contenedor (`node:24-bookworm-slim`) con:
+  - volumen de código `~/apps/home-manager:/app`
+  - volumen persistente para `node_modules`
+  - sincronización de esquema con `prisma db push` al arranque
+- Publicada ruta privada de la app en reverse-proxy bajo prefijo `/hm` y `/hm/`.
+- Alineada configuración de `home-manager` con `basePath=/hm` para servir assets y rutas correctamente detrás de proxy por prefijo.
+- Ajustados headers de proxy (`X-Forwarded-*`) para mantener navegación HTTPS estable a través de Tailscale Serve.
+
 ## 2026-03-22
 
 - Actualizado stack `automation-n8n` a versión segura `1.122.x` (tag desplegado `n8nio/n8n:1.122.1`) tras aviso crítico de actualización en panel.
