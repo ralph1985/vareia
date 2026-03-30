@@ -2,6 +2,12 @@
 
 Formato de fecha: `YYYY-MM-DD`.
 
+## 2026-03-30
+
+- Desactivado el autoarranque de `home-manager` en runtime (`/opt/infra/home-manager/compose.yml`) cambiando política de reinicio a `restart: "no"`.
+- Alineados `~/apps/home-manager/docker-compose.yml` y `~/apps/home-manager/docker-compose.infra.yml` para mantener `home-manager` apagado por defecto.
+- Definida política operativa: `home-manager` se levanta solo bajo demanda manual (`docker compose ... up -d` o `docker start home-manager`) y se detiene explícitamente con `docker stop home-manager`.
+
 ## 2026-03-29
 
 - Añadido nuevo stack runtime de app en `/opt/infra/home-manager` para desplegar `home-manager` desde código fuente en `~/apps/home-manager`.

@@ -105,7 +105,7 @@ journalctl -p err -n 100
 - `apps`: cada app con `README`, `compose.yml`, `.env` y `.env.example`.
 - `apps`: por defecto solo en `infra-net`; usar `proxy-net` solo con necesidad explicita.
 - `apps`: cada app con DB dedicada (`app_<slug>` / `usr_<slug>`).
-- `apps`: defaults operativos por app: `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM`.
+- `apps`: defaults operativos por app: `restart: unless-stopped`, `healthcheck`, `0.25 CPU`, `256MB RAM` (excepto `home-manager`, configurado con `restart: "no"`).
 - `apps`: código fuente de cada app en `~/apps/<app>`, fuera de `/opt/infra`.
 - `apps`: `project-manager` con auto-despliegue local tras `git pull` mediante hooks de Git.
 - `apps`: hooks definidos en `/home/monis/apps/project-manager/.githooks/` (`post-merge`, `post-rewrite`).
@@ -115,6 +115,7 @@ journalctl -p err -n 100
 - `apps`: `home-manager` opera en modo dev dentro de contenedor (`node:24-bookworm-slim`) con código montado desde `~/apps/home-manager`.
 - `apps`: `home-manager` usa `NEXT_BASE_PATH=/hm` para funcionar detrás del reverse-proxy por prefijo.
 - `apps`: `home-manager` sincroniza esquema de BD al arranque con `npx prisma db push`.
+- `apps`: `home-manager` queda apagado por defecto (`restart: "no"`); se arranca solo bajo demanda manual.
 - Monitorizacion (n8n -> Slack):
   - heartbeat diario operativo (host -> webhook n8n -> Slack)
   - script de host: `/opt/infra/scripts/heartbeat.sh`
@@ -241,8 +242,16 @@ sudo fail2ban-client status sshd
 ## Operación de home-manager
 
 ```bash
-# Levantar/actualizar stack runtime de home-manager
+# Política por defecto: apagado. Arranque manual solo cuando se necesite.
+
+# Levantar/actualizar stack runtime de home-manager (manual)
 docker compose -f /opt/infra/home-manager/compose.yml --env-file /opt/infra/home-manager/.env up -d
+
+# Arrancar si ya existe y está parado
+docker start home-manager
+
+# Parar y dejarlo apagado
+docker stop home-manager
 
 # Ver logs
 docker logs -f home-manager
