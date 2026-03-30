@@ -50,6 +50,7 @@ PROJECT_NAME="reverse-proxy"
 
 ensure_dir "${STACK_DIR}"
 ensure_dir "${STACK_DIR}/conf.d"
+ensure_dir "${STACK_DIR}/conf.d/routes"
 ensure_dir "${STACK_DIR}/logs"
 
 cat > "${STACK_DIR}/.env" <<EOF
@@ -60,6 +61,7 @@ N8N_HOST=${N8N_HOST}
 N8N_PORT=${N8N_PORT}
 NGINX_SERVER_NAMES=${NGINX_SERVER_NAMES}
 EOF
+chmod 600 "${STACK_DIR}/.env"
 
 cat > "${STACK_DIR}/.env.example" <<'EOF'
 NGINX_IMAGE=nginx:1.28-alpine
@@ -69,6 +71,7 @@ N8N_HOST=n8n.local
 N8N_PORT=5678
 NGINX_SERVER_NAMES=n8n.local
 EOF
+chmod 644 "${STACK_DIR}/.env.example"
 
 cat > "${STACK_DIR}/nginx.conf" <<'EOF'
 user nginx;
@@ -115,7 +118,7 @@ server {
 }
 EOF
 
-cat > "${STACK_DIR}/conf.d/n8n-private.conf" <<'EOF'
+cat > "${STACK_DIR}/conf.d/00-tailnet-gateway.conf" <<'EOF'
 server {
   listen 8080;
   server_name __SERVER_NAMES__;
@@ -125,23 +128,37 @@ server {
     return 200 'ok';
   }
 
-  location / {
-    proxy_pass http://automation-n8n:__N8N_PORT__;
-    proxy_http_version 1.1;
-
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header Connection "";
+  location = / {
+    add_header Content-Type text/plain;
+    return 200 'VareIA reverse proxy OK';
   }
+
+  include /etc/nginx/conf.d/routes/*.conf;
 }
 EOF
 
 sed -i \
   -e "s/__SERVER_NAMES__/${NGINX_SERVER_NAMES}/" \
-  -e "s/__N8N_PORT__/${N8N_PORT}/" \
-  "${STACK_DIR}/conf.d/n8n-private.conf"
+  "${STACK_DIR}/conf.d/00-tailnet-gateway.conf"
+
+cat > "${STACK_DIR}/conf.d/routes/10-n8n.conf" <<EOF
+location /n8n/ {
+  rewrite ^/n8n/(.*)\$ /\$1 break;
+  proxy_pass http://automation-n8n:${N8N_PORT};
+  proxy_http_version 1.1;
+
+  proxy_set_header Host \$host;
+  proxy_set_header X-Real-IP \$remote_addr;
+  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto \$scheme;
+
+  proxy_set_header Upgrade \$http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_read_timeout 3600;
+}
+EOF
+
+rm -f "${STACK_DIR}/conf.d/n8n-private.conf"
 
 cat > "${STACK_DIR}/compose.yml" <<'EOF'
 services:

@@ -30,6 +30,7 @@ Diagrama: `docs/architecture.md`.
 - `incidents/`: incidencias y postmortems.
 - `monitoring/`: métricas y revisiones periódicas.
 - `scripts/`: automatizaciones operativas.
+- `scripts/host/`: scripts de host versionados (backup, heartbeat) para desplegar en `/opt/infra/scripts/`.
 - `configs/servers/`: variables por servidor (`*.example.env` versionados).
 
 ## Cómo navegar esta documentación

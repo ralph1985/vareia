@@ -67,7 +67,9 @@ journalctl -p err -n 100
 - `postgres-shared`: configuracion por defecto en fase inicial.
 - `postgres-shared`: limites iniciales `0.5 CPU` y `512MB RAM`.
 - Backups operativos reales:
-  - script: `/opt/infra/scripts/vareia-backup.sh`
+  - script runtime: `/opt/infra/scripts/vareia-backup.sh`
+  - fuente versionada: `~/apps/vareia/scripts/host/vareia-backup.sh`
+  - config runtime: `/opt/infra/.backup.env` (fuente base: `~/apps/vareia/configs/servers/backup.example.env`)
   - automatizacion: `systemd` (`vareia-backup.service` + `vareia-backup.timer`)
   - programacion: diario a `03:30 UTC` (`Persistent=true`)
   - retencion local: 30 dias
@@ -118,7 +120,9 @@ journalctl -p err -n 100
 - `apps`: `home-manager` queda apagado por defecto (`restart: "no"`); se arranca solo bajo demanda manual.
 - Monitorizacion (n8n -> Slack):
   - heartbeat diario operativo (host -> webhook n8n -> Slack)
-  - script de host: `/opt/infra/scripts/heartbeat.sh`
+  - script runtime: `/opt/infra/scripts/heartbeat.sh`
+  - fuente versionada: `~/apps/vareia/scripts/host/heartbeat.sh`
+  - config runtime: `/opt/infra/.heartbeat.env` (fuente base: `~/apps/vareia/configs/servers/heartbeat.example.env`)
   - cron operativo diario en root para ejecutar `/opt/infra/scripts/heartbeat.sh` (log en `/var/log/heartbeat.log`)
   - autenticacion de heartbeat por header `X-Heartbeat-Token`
   - checks cada 15 minutos (modo conservador)

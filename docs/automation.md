@@ -13,14 +13,14 @@ sudo ./scripts/bootstrap-host.sh --user <usuario-admin> --with-tailscale
 2. Preparar variables del servidor:
 
 ```bash
-cp configs/servers/VareIA.example.env configs/servers/VareIA-prod.env
-vi configs/servers/VareIA-prod.env
+cp configs/servers/vareia.example.env configs/servers/vareia-prod.env
+vi configs/servers/vareia-prod.env
 ```
 
 3. Despliegue de stacks iniciales:
 
 ```bash
-./scripts/run-all.sh --env-file ./configs/servers/VareIA-prod.env
+./scripts/run-all.sh --env-file ./configs/servers/vareia-prod.env
 ```
 
 ## Scripts disponibles
@@ -70,7 +70,40 @@ Notas:
   - crea roles/BBDD si no existen;
   - actualiza password de roles si ya existen.
 
+## Scripts de host versionados (backup + heartbeat)
+
+Fuente versionada en repo:
+- `scripts/host/heartbeat.sh`
+- `scripts/host/vareia-backup.sh`
+- `configs/servers/heartbeat.example.env`
+- `configs/servers/backup.example.env`
+
+Despliegue recomendado al runtime del VPS:
+
+```bash
+cd /home/monis/apps/vareia
+
+cp configs/servers/heartbeat.example.env configs/servers/heartbeat-prod.env
+cp configs/servers/backup.example.env configs/servers/backup-prod.env
+vi configs/servers/heartbeat-prod.env
+vi configs/servers/backup-prod.env
+
+sudo install -d -m 0755 /opt/infra/scripts
+sudo install -m 0700 scripts/host/heartbeat.sh /opt/infra/scripts/heartbeat.sh
+sudo install -m 0700 scripts/host/vareia-backup.sh /opt/infra/scripts/vareia-backup.sh
+
+sudo install -m 0600 configs/servers/heartbeat-prod.env /opt/infra/.heartbeat.env
+sudo install -m 0600 configs/servers/backup-prod.env /opt/infra/.backup.env
+```
+
+Ejecución manual de validación:
+
+```bash
+sudo /opt/infra/scripts/heartbeat.sh --env-file /opt/infra/.heartbeat.env
+sudo /opt/infra/scripts/vareia-backup.sh --env-file /opt/infra/.backup.env
+```
+
 ## Política de secretos
 
 - Nunca subir `configs/servers/*.env` reales al repositorio.
-- Solo versionar `configs/servers/VareIA.example.env`.
+- Solo versionar `configs/servers/vareia.example.env`.
