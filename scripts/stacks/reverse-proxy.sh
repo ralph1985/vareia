@@ -41,6 +41,8 @@ require_env N8N_HOST
 require_env N8N_PORT
 
 NGINX_SERVER_NAMES="${NGINX_SERVER_NAMES:-${N8N_HOST}}"
+HOME_MANAGER_HOST="${HOME_MANAGER_HOST:-}"
+HOME_MANAGER_PORT="${HOME_MANAGER_PORT:-3000}"
 
 require_cmd docker
 require_docker_access
@@ -60,6 +62,8 @@ NGINX_CPUS=${NGINX_CPUS}
 N8N_HOST=${N8N_HOST}
 N8N_PORT=${N8N_PORT}
 NGINX_SERVER_NAMES=${NGINX_SERVER_NAMES}
+HOME_MANAGER_HOST=${HOME_MANAGER_HOST}
+HOME_MANAGER_PORT=${HOME_MANAGER_PORT}
 EOF
 chmod 600 "${STACK_DIR}/.env"
 
@@ -70,6 +74,8 @@ NGINX_CPUS=0.25
 N8N_HOST=n8n.local
 N8N_PORT=5678
 NGINX_SERVER_NAMES=n8n.local
+HOME_MANAGER_HOST=home-manager
+HOME_MANAGER_PORT=3000
 EOF
 chmod 644 "${STACK_DIR}/.env.example"
 
@@ -157,6 +163,50 @@ location /n8n/ {
   proxy_read_timeout 3600;
 }
 EOF
+
+if [[ -n "${HOME_MANAGER_HOST}" ]]; then
+  cat > "${STACK_DIR}/conf.d/routes/30-home-manager.conf" <<EOF
+location = /hm {
+  resolver 127.0.0.11 ipv6=off valid=30s;
+  set \$home_manager_upstream "${HOME_MANAGER_HOST}:${HOME_MANAGER_PORT}";
+
+  proxy_pass http://\$home_manager_upstream/hm;
+  proxy_http_version 1.1;
+
+  proxy_set_header Host \$host;
+  proxy_set_header X-Forwarded-Host \$host;
+  proxy_set_header X-Real-IP \$remote_addr;
+  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto https;
+  proxy_set_header X-Forwarded-Port 443;
+
+  proxy_set_header Upgrade \$http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_read_timeout 3600;
+}
+
+location /hm/ {
+  resolver 127.0.0.11 ipv6=off valid=30s;
+  set \$home_manager_upstream "${HOME_MANAGER_HOST}:${HOME_MANAGER_PORT}";
+
+  proxy_pass http://\$home_manager_upstream;
+  proxy_http_version 1.1;
+
+  proxy_set_header Host \$host;
+  proxy_set_header X-Forwarded-Host \$host;
+  proxy_set_header X-Real-IP \$remote_addr;
+  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto https;
+  proxy_set_header X-Forwarded-Port 443;
+
+  proxy_set_header Upgrade \$http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_read_timeout 3600;
+}
+EOF
+else
+  rm -f "${STACK_DIR}/conf.d/routes/30-home-manager.conf"
+fi
 
 rm -f "${STACK_DIR}/conf.d/n8n-private.conf"
 
