@@ -4,9 +4,9 @@ Documento operativo de referencia para el despliegue y evolución de OpenClaw co
 
 ## Estado
 
-- Estado actual: v1 validado funcionalmente fuera de Docker; pendiente formalizar servicio persistente.
+- Estado actual: v1 operativo y persistente en `systemd` (host).
 - Runtime v1: servicio local `systemd` (usuario `monis`).
-- Stack Docker `/opt/infra/orchestrator`: reservado para fase 2.
+- Stack Docker `/opt/infra/orchestrator`: desmontado en v1 para liberar recursos; reservado solo como referencia de fase 2.
 - Integración principal v1: Slack (conversación directa por DM).
 
 Estado operativo actual (2026-04-02):
@@ -25,6 +25,10 @@ Estado operativo actual (2026-04-03):
 - Integración Slack validada de extremo a extremo:
   - Socket Mode conectado
   - respuesta por DM operativa sin error de billing
+- Limpieza Docker completada:
+  - contenedor `orchestrator-openclaw` eliminado
+  - volúmenes `orchestrator_openclaw-data` y `orchestrator_openclaw-logs` eliminados
+  - imagen `ghcr.io/openclaw/openclaw:latest` eliminada
 
 ## Objetivo v1
 
@@ -42,8 +46,8 @@ Fecha de captura: 2026-04-02.
 - Modo de operación: action-enabled con confirmación obligatoria en acciones sensibles.
 - Confirmación de acciones sensibles: botones interactivos de Slack (aprobar/rechazar).
 - Estrategia de app Slack: separar app de OpenClaw de `VareIA Alerts`.
-- Runtime: despliegue en contenedor Docker dentro de `/opt/infra/orchestrator`.
 - Runtime v1 confirmado: `systemd` fuera de Docker.
+- Runtime Docker v1: retirado tras migración exitosa a `systemd`.
 - Gestión de alcance: evolución por fases, documentando hecho/pendiente.
 
 ## Subagentes iniciales (v1)
@@ -114,12 +118,10 @@ Política de aprobador:
 - Registro cronológico: `changes/CHANGELOG.md`.
 - Estado global del VPS: `inventory/vps-inventory.md` y `docs/runbook.md`.
 
-## Pendientes inmediatos
+## Pendientes inmediatos (post-estabilización v1)
 
-- Crear y configurar nueva Slack App para OpenClaw (scopes, eventos, interactivity).
-- Definir endpoint/callback interno para eventos de Slack.
-- Definir compose y `.env` de `/opt/infra/orchestrator`.
-- Definir política de permisos por subagente.
+- Ajustar scopes de Slack faltantes para resolver warning `missing_scope` en resolución de canales.
+- Definir política detallada de permisos por subagente.
 - Definir estrategia de auditoría y retención de logs.
 
 ## Plantilla de variables (repo)

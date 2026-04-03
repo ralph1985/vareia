@@ -34,18 +34,19 @@ Objetivo: desplegar OpenClaw como orquestador en Slack, con ejecución controlad
 
 ## Fase 2 - Stack Orchestrator en VPS
 
-- [ ] Crear runtime Docker `/opt/infra/orchestrator` (fase 2).
+- [x] Crear runtime Docker `/opt/infra/orchestrator` (fase 2).
 - [x] Crear plantilla de `compose.yml` en repo (`configs/stacks/orchestrator/compose.example.yml`).
-- [ ] Definir `compose.yml` runtime del servicio `orchestrator-openclaw` (fase 2).
+- [x] Definir `compose.yml` runtime del servicio `orchestrator-openclaw` (fase 2).
 - [x] Crear plantilla repo `configs/servers/openclaw.example.env` (sin secretos).
-- [ ] Definir `.env` runtime en `/opt/infra/orchestrator/.env` (fase 2).
+- [x] Definir `.env` runtime en `/opt/infra/orchestrator/.env` (fase 2).
 - [x] Crear `.env.example` de stack en repo (`configs/stacks/orchestrator/.env.example`).
 - [ ] Definir `.env.example` runtime del stack.
 - [ ] Validar imagen/tag oficial OpenClaw antes del primer deploy real.
 - [ ] Conectar stack a `infra-net` (sin puertos públicos).
 - [ ] Definir `restart: unless-stopped` y `healthcheck`.
 - [ ] Definir límites iniciales (`0.25 CPU`, `256MB RAM`) o ajuste acordado.
-- [ ] Levantar stack y validar contenedor `Up` en runtime (fase 2).
+- [x] Levantar stack y validar contenedor `Up` en runtime (fase 2).
+- [x] Retirar runtime Docker de v1 tras migración estable a `systemd` (contenedor, volúmenes e imagen eliminados).
 
 ## Fase 2b - Runtime v1 (systemd, fuera de Docker)
 
@@ -57,21 +58,12 @@ Objetivo: desplegar OpenClaw como orquestador en Slack, con ejecución controlad
 - [x] Ajustar modelo persistente a gratuito (`openrouter/free`) para evitar bloqueo por créditos.
 - [x] Validar operación estable con Slack Socket Mode conectado y respuesta en DM.
 
-## Punto de pausa (2026-04-02)
-
-- Estado actual:
-  - `orchestrator-openclaw` desplegado y estable en `Up`.
-  - Slack App `VareIA Bot` instalada, `Socket Mode` activo, eventos DM e interactividad activos.
-  - Tokens Slack en `/opt/infra/orchestrator/.env` con permisos `0600`.
-  - Mensajería DM llega al bot, pero no hay respuesta por falta de proveedor LLM/API key.
-- Siguiente acción al retomar:
-  - configurar proveedor inicial (`OpenRouter`) en `/opt/infra/orchestrator/.env` y recrear contenedor.
-
 ## Cierre de reanudación (2026-04-03)
 
 - Reanudación completada.
 - OpenClaw operativo en modo persistente con `systemd`.
 - Modelo en uso: `openrouter/free`.
+- Runtime Docker de OpenClaw desmontado para liberar espacio.
 
 ## Fase 3 - Enrutado y acceso interno
 

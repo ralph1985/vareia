@@ -9,6 +9,10 @@ Formato de fecha: `YYYY-MM-DD`.
 - Fijado modelo operativo gratuito en configuración local: `openrouter/free`.
 - Confirmado funcionamiento de Slack Socket Mode con respuesta del bot en DM.
 - Confirmado runtime persistente con `systemd` (`openclaw-gateway.service`) tras ajuste de entorno final.
+- Desmontado runtime Docker temporal de OpenClaw para liberar espacio:
+  - eliminado contenedor `orchestrator-openclaw`
+  - eliminados volúmenes `orchestrator_openclaw-data` y `orchestrator_openclaw-logs`
+  - eliminada imagen `ghcr.io/openclaw/openclaw:latest`
 - Actualizados `docs/orchestrator-openclaw.md` y `checklists/openclaw-rollout.md` con estado final operativo.
 
 ## 2026-04-02
