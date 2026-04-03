@@ -2,6 +2,76 @@
 
 Formato de fecha: `YYYY-MM-DD`.
 
+## 2026-04-03
+
+- Reanudada la puesta en marcha de OpenClaw y validada operación end-to-end en Slack DM.
+- Corregida selección de modelo del agente principal para evitar fallback a Anthropic sin credenciales.
+- Fijado modelo operativo gratuito en configuración local: `openrouter/free`.
+- Confirmado funcionamiento de Slack Socket Mode con respuesta del bot en DM.
+- Confirmado runtime persistente con `systemd` (`openclaw-gateway.service`) tras ajuste de entorno final.
+- Actualizados `docs/orchestrator-openclaw.md` y `checklists/openclaw-rollout.md` con estado final operativo.
+
+## 2026-04-02
+
+- Definido modelo documental para OpenClaw con capa ADR + documento operativo + checklist de rollout.
+- Añadido documento operativo base `docs/orchestrator-openclaw.md`.
+- Añadida carpeta `docs/adr/` con decisiones iniciales:
+  - `ADR-001-openclaw-documentation-model.md`
+  - `ADR-002-openclaw-slack-v1-interaction.md`
+- Añadido `checklists/openclaw-rollout.md` para seguimiento por fases (`hecho`/`pendiente`).
+- Confirmadas decisiones de arranque de OpenClaw v1:
+  - interacción inicial por DM en Slack;
+  - idioma español siempre;
+  - app Slack separada de `VareIA Alerts`;
+  - ejecución permitida con confirmación obligatoria en acciones sensibles;
+  - confirmación mediante botones interactivos.
+- Definidos identificadores iniciales de la nueva app Slack del orquestador:
+  - nombre de app: `VareIA Bot`
+  - handle del bot: `vareia-bot`
+- Añadida guía de configuración Slack v1 (scopes/eventos/interactividad) en `docs/orchestrator-openclaw.md`.
+- Confirmado transporte Slack para v1: `Socket Mode` (sin callback HTTP público).
+- Añadido `ADR-003-openclaw-slack-socket-mode-v1.md`.
+- Definidos scopes mínimos de `VareIA Bot` para v1:
+  - bot: `chat:write`, `im:history`
+  - app-level (`Socket Mode`): `connections:write`
+- Ampliados scopes del bot para autonomía inicial:
+  - añadidos `im:write` y `users:read`.
+- Definida política de acciones sensibles con confirmación obligatoria por botones en Slack.
+- Añadido `ADR-004-openclaw-sensitive-actions-policy.md`.
+- Definida política de expiración de aprobaciones sensibles: sin caducidad automática.
+- Añadido `ADR-005-openclaw-approval-expiration-policy.md`.
+- Definida política de concurrencia de aprobaciones para v1: una sola acción sensible pendiente a la vez.
+- Añadido `ADR-006-openclaw-single-pending-approval-v1.md`.
+- Definida política de aprobador de acciones sensibles: solo owner operativo.
+- Añadido `ADR-007-openclaw-approver-policy-owner-only-v1.md`.
+- Definida la variable runtime `OWNER_SLACK_USER_ID` para control de aprobador único (sin versionar el valor real).
+- Añadida plantilla `configs/servers/openclaw.example.env` con variables de Slack, políticas de aprobación, catálogo inicial de subagentes y auditoría.
+- Añadidas plantillas de stack para orchestrator:
+  - `configs/stacks/orchestrator/compose.example.yml`
+  - `configs/stacks/orchestrator/.env.example`
+- Alineado `openclaw.example.env` con variables de runtime de imagen y límites (`OPENCLAW_IMAGE`, `OPENCLAW_MEM_LIMIT`, `OPENCLAW_CPUS`).
+- Añadida política de validación de imagen/tag OpenClaw contra fuentes oficiales antes de primer deploy/upgrade.
+- Creada en Slack la nueva app de orquestación `VareIA Bot` (separada de `VareIA Alerts`).
+- Añadidos y configurados en Slack App los Bot Token Scopes de v1: `chat:write`, `im:history`, `im:write`, `users:read`.
+- Instalada `VareIA Bot` en el workspace de Slack.
+- Activado `Socket Mode` y generado token app-level (`xapp-...`) con `connections:write`.
+- Activadas suscripciones de eventos para DM (`message.im`).
+- Confirmada interactividad activa en Slack App para flujo de botones de aprobación/rechazo.
+- Guardadas credenciales Slack (`xoxb`, `xapp`, `signing secret`) en runtime seguro (`/opt/infra/orchestrator/.env`, permisos `0600`).
+- Desplegado runtime inicial de `orchestrator-openclaw` en `/opt/infra/orchestrator` con contenedor en estado `Up`.
+- Corregida plantilla de compose para OpenClaw:
+  - eliminado `command` hardcodeado (`node dist/index.js`);
+  - desactivado healthcheck embebido de imagen en v1 (`healthcheck.disable=true`) para evitar bloqueos durante bootstrap.
+- Habilitada recepción de DM en Slack App (Messages Tab) y validado envío de mensajes al bot.
+- Identificado bloqueo funcional actual: proveedor/modelo LLM no configurado en runtime (sin API key).
+- Punto de reanudación definido: integrar proveedor inicial (`OpenRouter`) en `.env` y recrear stack.
+- Validada respuesta real del bot en Slack al ejecutar `openclaw gateway --allow-unconfigured` fuera de Docker.
+- Decidido runtime de v1 fuera de Docker con `systemd`; Docker queda como fase 2.
+- Añadido `ADR-008-openclaw-runtime-v1-systemd-not-docker.md`.
+- Creado y habilitado `openclaw-gateway.service` en systemd (usuario `monis`) para operación persistente.
+- Variables sensibles movidas a `/opt/infra/orchestrator/openclaw.systemd.env` con permisos `0600`.
+- Corregido arranque en systemd añadiendo `PATH` de Node.js (NVM) en la unidad para resolver `/usr/bin/env: node: No such file or directory`.
+
 ## 2026-03-30
 
 - Desactivado el autoarranque de `home-manager` en runtime (`/opt/infra/home-manager/compose.yml`) cambiando política de reinicio a `restart: "no"`.

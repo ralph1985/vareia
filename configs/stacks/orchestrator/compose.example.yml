@@ -1,0 +1,27 @@
+services:
+  orchestrator-openclaw:
+    image: ${OPENCLAW_IMAGE}
+    container_name: orchestrator-openclaw
+    restart: unless-stopped
+    env_file:
+      - .env
+    mem_limit: ${OPENCLAW_MEM_LIMIT}
+    cpus: ${OPENCLAW_CPUS}
+    volumes:
+      - openclaw-data:/var/lib/openclaw
+      - openclaw-logs:/var/log/openclaw
+    # The upstream image ships its own healthcheck. Disable it in v1 runtime
+    # because it may fail during unconfigured bootstrap and block operations.
+    healthcheck:
+      disable: true
+    networks:
+      - infra-net
+
+volumes:
+  openclaw-data:
+  openclaw-logs:
+
+networks:
+  infra-net:
+    external: true
+    name: infra-net
