@@ -105,6 +105,7 @@ AUTOMATION_ENV_FILE="${AUTOMATION_ENV_FILE:-/opt/infra/automation/.env}"
 HM_DIR="$BACKUP_ROOT/home-manager"
 N8N_PG_DIR="$BACKUP_ROOT/n8n/postgres"
 N8N_DATA_DIR="$BACKUP_ROOT/n8n/data"
+LOTO_SYNC_DIR="$BACKUP_ROOT/loto-sync"
 LOG_DIR="$BACKUP_ROOT/logs"
 
 TIMESTAMP="$(date -u +%Y%m%d-%H%M%S)"
@@ -141,7 +142,7 @@ require_cmd curl
 SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL:-$(read_env "SLACK_WEBHOOK_URL" "$AUTOMATION_ENV_FILE")}"
 
 umask 077
-mkdir -p "$HM_DIR" "$N8N_PG_DIR" "$N8N_DATA_DIR" "$LOG_DIR"
+mkdir -p "$HM_DIR" "$N8N_PG_DIR" "$N8N_DATA_DIR" "$LOTO_SYNC_DIR" "$LOG_DIR"
 exec > >(tee -a "$LOG_FILE") 2>&1
 
 trap on_error ERR
@@ -201,6 +202,23 @@ tar -tzf "$CURRENT_TMP" >/dev/null
 mv "$CURRENT_TMP" "$N8N_DATA_FILE"
 CURRENT_TMP=""
 
+LOTO_SYNC_REMOTE_SYNC_BASE_URL="${LOTO_SYNC_REMOTE_SYNC_BASE_URL:-}"
+LOTO_SYNC_DB_SYNC_TOKEN="${LOTO_SYNC_DB_SYNC_TOKEN:-}"
+[[ -z "$LOTO_SYNC_REMOTE_SYNC_BASE_URL" || -z "$LOTO_SYNC_DB_SYNC_TOKEN" ]] && {
+  echo "ERROR: loto-sync config missing in $ENV_FILE (LOTO_SYNC_REMOTE_SYNC_BASE_URL / LOTO_SYNC_DB_SYNC_TOKEN)"
+  exit 1
+}
+
+STAGE="loto-sync-export"
+LOTO_SYNC_FILE="$LOTO_SYNC_DIR/loto-sync-$TIMESTAMP.json"
+CURRENT_TMP="$LOTO_SYNC_FILE.tmp"
+curl -fsSL -H "x-db-sync-token: $LOTO_SYNC_DB_SYNC_TOKEN" \
+  "${LOTO_SYNC_REMOTE_SYNC_BASE_URL%/}/api/admin/db-sync/export" \
+  > "$CURRENT_TMP"
+test -s "$CURRENT_TMP"
+mv "$CURRENT_TMP" "$LOTO_SYNC_FILE"
+CURRENT_TMP=""
+
 STAGE="onedrive-upload"
 NODE_BIN_PATH="$(command -v node || true)"
 if [[ -z "$NODE_BIN_PATH" ]]; then
@@ -223,10 +241,15 @@ NODE_BIN="$NODE_BIN_PATH" "$ONEDRIVE_SYNC_DIR/run.sh" \
   --local "$N8N_DATA_FILE" \
   --remote "$BACKUP_REMOTE_ROOT/n8n/data/${N8N_DATA_FILE##*/}"
 
+NODE_BIN="$NODE_BIN_PATH" "$ONEDRIVE_SYNC_DIR/run.sh" \
+  --local "$LOTO_SYNC_FILE" \
+  --remote "$BACKUP_REMOTE_ROOT/loto-sync/${LOTO_SYNC_FILE##*/}"
+
 STAGE="retention"
 find "$HM_DIR" -type f -name "*.sql.gz" -mtime +"$RETENTION_DAYS" -delete
 find "$N8N_PG_DIR" -type f -name "*.sql.gz" -mtime +"$RETENTION_DAYS" -delete
 find "$N8N_DATA_DIR" -type f -name "*.tar.gz" -mtime +"$RETENTION_DAYS" -delete
+find "$LOTO_SYNC_DIR" -type f -name "loto-sync-*.json" -mtime +"$RETENTION_DAYS" -delete
 find "$LOG_DIR" -type f -name "backup-*.log" -mtime +"$RETENTION_DAYS" -delete
 
 echo "[$(date -u +%FT%TZ)] Backup run completed successfully"
@@ -237,5 +260,5 @@ Resultado: completado + subida OneDrive
 Ficheros:
 - home-manager: ${HM_FILE##*/}
 - n8n-postgres: ${N8N_PG_FILE##*/}
-- n8n-data: ${N8N_DATA_FILE##*/}"
-
+- n8n-data: ${N8N_DATA_FILE##*/}
+- loto-sync: ${LOTO_SYNC_FILE##*/}"

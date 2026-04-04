@@ -78,10 +78,14 @@ journalctl -p err -n 100
   - PostgreSQL de `home-manager` (`app_home_manager`) en `/opt/backups/home-manager/*.sql.gz`
   - PostgreSQL de `n8n` (`app_n8n`) en `/opt/backups/n8n/postgres/*.sql.gz`
   - volumen `n8n-data` en caliente en `/opt/backups/n8n/data/*.tar.gz`
+  - dataset de `loto-sync` exportado desde Vercel en `/opt/backups/loto-sync/loto-sync-*.json`
   - logs del propio backup en `/opt/backups/logs/backup-*.log`
 - Copia externa:
   - subida automatica a OneDrive mediante `~/apps/onedrive-file-sync/run.sh`
   - ruta remota base: `backups/VareIA/...` (dentro de `Apps/<onedrive-app-name>/`)
+- Variables adicionales requeridas en `/opt/infra/.backup.env` para `loto-sync`:
+  - `LOTO_SYNC_REMOTE_SYNC_BASE_URL`
+  - `LOTO_SYNC_DB_SYNC_TOKEN`
 - Alertas:
   - Slack en `OK` y `FAIL` desde el propio script de backup
   - formato operativo con prefijo de estado y lista de ficheros generados/subidos

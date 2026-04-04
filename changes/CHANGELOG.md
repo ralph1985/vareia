@@ -2,6 +2,16 @@
 
 Formato de fecha: `YYYY-MM-DD`.
 
+## 2026-04-04
+
+- Extendido backup operativo `systemd` (`vareia-backup.service`) para incluir `loto-sync` sin crear un timer adicional.
+- Añadida exportación remota de `loto-sync` vía `GET /api/admin/db-sync/export` autenticada por token.
+- Añadida copia local de `loto-sync` en `/opt/backups/loto-sync/loto-sync-<timestamp>.json`.
+- Añadida subida de copia de `loto-sync` a OneDrive en `backups/VareIA/loto-sync/...`.
+- Añadida retención local de 30 días para ficheros `loto-sync-*.json`.
+- Añadidas variables requeridas en `backup env`: `LOTO_SYNC_REMOTE_SYNC_BASE_URL`, `LOTO_SYNC_DB_SYNC_TOKEN`.
+- Validada ejecución manual del servicio con resultado `SUCCESS` y fichero generado.
+
 ## 2026-04-03
 
 - Reanudada la puesta en marcha de OpenClaw y validada operación end-to-end en Slack DM.

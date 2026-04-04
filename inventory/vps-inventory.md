@@ -52,6 +52,7 @@
   - `home-manager` PostgreSQL (`app_home_manager`) -> `/opt/backups/home-manager/home-manager-<timestamp>.sql.gz`
   - `n8n` PostgreSQL (`app_n8n`) -> `/opt/backups/n8n/postgres/n8n-postgres-<timestamp>.sql.gz`
   - volumen `n8n-data` (hot backup) -> `/opt/backups/n8n/data/n8n-data-<timestamp>.tar.gz`
+  - `loto-sync` (export API remota con token) -> `/opt/backups/loto-sync/loto-sync-<timestamp>.json`
   - logs de ejecución -> `/opt/backups/logs/backup-<timestamp>.log`
 - Copia externa:
   - herramienta: `~/apps/onedrive-file-sync/run.sh`
