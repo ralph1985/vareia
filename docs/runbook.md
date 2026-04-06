@@ -239,6 +239,23 @@ sudo fail2ban-client status sshd
 - No almacenar usuarios, IPs ni tokens en este repositorio público.
 - Gestión de credenciales fuera de este repositorio.
 
+## Operación de correo del bot (Gmail IMAP)
+
+- Cuenta objetivo: `vareia.bot@gmail.com`.
+- Método de integración vigente: Opción 1 en modo lectura (`IMAP + App Password`).
+- Guía operativa: `docs/gmail-bot-imap-smtp.md`.
+- Archivo runtime de secretos (VPS): `/opt/infra/.gmail-bot.env` (`0600`, no versionar).
+- Implementación recomendada (fase actual):
+  - lectura por IMAP en `n8n` (polling 1-5 min)
+  - filtros obligatorios: allowlist de remitentes + prefijo de asunto + token compartido
+  - acciones sensibles: siempre con flujo de aprobación antes de ejecutar
+- SMTP queda aplazado para fase posterior (cuando se necesite envío desde `n8n`).
+- Rotación: cambiar App Password periódicamente y actualizar credenciales en `n8n`.
+- Estado operativo actual (2026-04-06):
+  - workflow activo `leer-correos-imap`
+  - lectura actual sin filtros (todos los correos de `INBOX`)
+  - notificación de nuevo correo hacia Slack operativa vía webhook
+
 ## Procedimiento de mantenimiento
 
 1. Crear backup.

@@ -38,9 +38,10 @@ Diagrama: `docs/architecture.md`.
 1. `docs/architecture.md` para entender el diseño general.
 2. `docs/bootstrap-host.md` para preparar un host base reproducible.
 3. `docs/execution-checklist.md` para ejecutar despliegue por fases.
-4. `docs/runbook.md` para operación diaria y troubleshooting.
-5. `inventory/vps-inventory.md` para estado técnico consolidado.
-6. `changes/CHANGELOG.md` para historial de cambios.
+4. `docs/gmail-bot-imap-smtp.md` para integrar correo del bot con Gmail (fase actual: IMAP lectura).
+5. `docs/runbook.md` para operación diaria y troubleshooting.
+6. `inventory/vps-inventory.md` para estado técnico consolidado.
+7. `changes/CHANGELOG.md` para historial de cambios.
 
 ## Nota de seguridad del repositorio público
 

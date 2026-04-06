@@ -167,3 +167,20 @@ Objetivo: ejecutar el despliegue en el orden confirmado, marcando estado real en
 - [x] Actualizar `changes/CHANGELOG.md`.
 - [x] Actualizar `inventory/vps-inventory.md`.
 - [ ] Registrar incidencias en `incidents/INCIDENTS.md` si aplica.
+
+## Paso 11 - Correo del bot (Gmail Opción 1)
+
+- [x] Activar 2FA en `vareia.bot@gmail.com`.
+- [x] Activar IMAP en Gmail.
+- [x] Crear App Password para el VPS (`vareia-vps-n8n-mail` o equivalente).
+- [x] Crear runtime env en VPS: `/opt/infra/.gmail-bot.env` (`0600`).
+- [x] Crear credencial IMAP en `n8n` (`imap.gmail.com:993`, SSL).
+- [x] Implementar workflow base de lectura (`leer-correos-imap`) y activar notificación a Slack por correo recibido.
+- [x] Ejecutar prueba E2E de lectura + notificación a Slack.
+- [ ] Endurecer workflow con filtros mínimos:
+  - [ ] remitentes permitidos (allowlist)
+  - [ ] prefijo de asunto (por ejemplo `[VAREIA-CMD]`)
+  - [ ] token compartido en cuerpo
+- [ ] Enrutar acciones sensibles a flujo de aprobación antes de ejecutar.
+- [ ] Planificar rotación periódica de App Password.
+- [ ] (Posterior) Crear credencial SMTP en `n8n` (`smtp.gmail.com:465`, SSL).

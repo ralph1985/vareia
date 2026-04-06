@@ -2,6 +2,18 @@
 
 Formato de fecha: `YYYY-MM-DD`.
 
+## 2026-04-06
+
+- Documentada la integración de correo del bot por Gmail Opción 1 (`IMAP/SMTP + App Password`) en `docs/gmail-bot-imap-smtp.md`.
+- Añadida plantilla de variables sin secretos para correo del bot en `configs/servers/gmail-bot.example.env`.
+- Actualizado `docs/runbook.md` con sección operativa de correo del bot (runtime env, controles y rotación).
+- Extendida `docs/execution-checklist.md` con `Paso 11` para cierre completo de la integración por correo.
+- Actualizado `README.md` para incluir la guía de Gmail en el orden de lectura.
+- Ajustada la decisión operativa temporal: fase actual solo `IMAP` (lectura); `SMTP` queda aplazado para fase posterior.
+- Validada operación real en `n8n` del workflow `leer-correos-imap` para lectura de `INBOX`.
+- Integrada notificación de nuevo correo hacia Slack desde `leer-correos-imap`.
+- Documentado estado operativo actual sin filtros de remitente/asunto/token (endurecimiento pendiente).
+
 ## 2026-04-04
 
 - Extendido backup operativo `systemd` (`vareia-backup.service`) para incluir `loto-sync` sin crear un timer adicional.
